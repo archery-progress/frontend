@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { store } from './store.ts'
 import AuthenticationLayout from './apps/authentication/commons/components/layout'
 import { LoginPage } from './apps/authentication/pages/login_page'
+import '@/commons/assets/css/app.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
