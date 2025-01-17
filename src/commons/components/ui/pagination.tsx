@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
-import { cn, handleChangeCurrentPage } from '@/commons/utils'
+import { cn, useChangeCurrentPage } from '@/commons/utils'
 import { ButtonProps, buttonVariants } from '@/commons/components/ui/button'
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
@@ -39,22 +39,25 @@ const PaginationLink = ({
   disabled,
   page,
   ...props
-}: PaginationLinkProps) => (
-  <span
-    aria-current={isActive ? 'page' : undefined}
-    {...(!disabled ? { onClick: () => handleChangeCurrentPage(page) } : {})}
-    className={cn(
-      buttonVariants({
-        variant: disabled
-          ? 'disabled'
-          : isActive ? 'outline' : 'ghost',
-        size,
-      }),
-      className
-    )}
-    {...props}
-  />
-)
+}: PaginationLinkProps) => {
+  const onChangeCurrentPage = useChangeCurrentPage()
+  return (
+    <span
+      aria-current={isActive ? 'page' : undefined}
+      {...(!disabled ? { onClick: () => onChangeCurrentPage(window.location.pathname, page) } : {})}
+      className={cn(
+        buttonVariants({
+          variant: disabled
+            ? 'disabled'
+            : isActive ? 'outline' : 'ghost',
+          size,
+        }),
+        className
+      )}
+      {...props}
+    />
+  )
+}
 PaginationLink.displayName = 'PaginationLink'
 
 const PaginationPrevious = ({

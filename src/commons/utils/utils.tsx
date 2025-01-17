@@ -1,4 +1,5 @@
 import { ExternalToast } from 'sonner'
+import { useNavigate } from 'react-router'
 
 export function cn(...classes: (string | undefined | null | false)[]): string {
   return classes.filter(Boolean).join(' ')
@@ -9,54 +10,81 @@ export function getCurrentParameters(source?: URLSearchParams): { [key: string]:
   return Array.from(queryParams.entries()).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
 }
 
-export function handleChangeItemPerPage(url: string, value: string | number) {
-  // router.get(
-  //   url,
-  //   {
-  //     ...getCurrentParameters(),
-  //     limit: value,
-  //   },
-  //   {
-  //     preserveState: true,
-  //   }
-  // )
-}
+export function useChangeItemPerPage() {
+  const navigate = useNavigate()
 
-export function handleChangeParameter(resourceRoute: string, key: string, value: string | number | boolean) {
-  const queryParams = new URLSearchParams(window.location.search)
-  const target = queryParams.get(key)
+  function changeItemPerPage(url: string, value: string | number) {
+    const queryParams = new URLSearchParams(window.location.search)
+    queryParams.set('limit', value.toString())
 
-  if (target === value) {
-    queryParams.delete(key)
-  } else {
-    queryParams.set(key, value.toString())
+    navigate({
+      pathname: url,
+      search: `?${queryParams.toString()}`
+    })
   }
 
-  // router.get(resourceRoute, getCurrentParameters(queryParams), {
-  //   preserveState: true,
-  // })
+  return changeItemPerPage
 }
 
-export function handleChangeCurrentPage(value: string | number | undefined) {
-  // router.get('/manager/users/overview', {
-  //   ...getCurrentParameters(),
-  //   page: value,
-  // })
-}
+export function useChangeParameter() {
+  const navigate = useNavigate()
 
-export function handleSearchByKey(
-  route: string,
-  searchKey: string,
-  value: string | number | undefined,
-  source?: URLSearchParams
-) {
-  const payload = getCurrentParameters(source)
+  function changeParameter(resourceRoute: string, key: string, value: string | number | boolean) {
+    const queryParams = new URLSearchParams(window.location.search)
+    const target = queryParams.get(key)
 
-  if (value) {
-    payload[searchKey] = value.toString()
+    if (target === value) {
+      queryParams.delete(key)
+    } else {
+      queryParams.set(key, value.toString())
+    }
+
+    navigate({
+      pathname: resourceRoute,
+      search: `?${queryParams.toString()}`
+    })
   }
 
-  // router.get(route, payload, { preserveState: true })
+  return changeParameter
+}
+
+export function useChangeCurrentPage() {
+  const navigate = useNavigate()
+
+  function replaceCurrentPage(url: string, value: string | number | undefined) {
+    const queryParams = new URLSearchParams(window.location.search)
+    if (value) {
+      queryParams.set('page', value.toString())
+    }
+
+    navigate({
+      pathname: url,
+      search: `?${queryParams.toString()}`
+    })
+  }
+
+  return replaceCurrentPage
+}
+
+export function useSearchByKey() {
+  const navigate = useNavigate()
+
+  function searchByKey(route: string, searchKey: string, value: string | number | undefined, source?: URLSearchParams) {
+    const payload = getCurrentParameters(source)
+
+    console.log(value)
+    if (value) {
+      payload[searchKey] = value.toString()
+    }
+
+    const queryParams = new URLSearchParams(payload)
+    navigate({
+      pathname: route,
+      search: `?${queryParams.toString()}`
+    })
+  }
+
+  return searchByKey
 }
 
 enum ToastVariant {

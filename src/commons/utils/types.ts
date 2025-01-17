@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 export type State<T> = [T, Dispatch<SetStateAction<T>>]
 
-export type Paginator<T> = {
+export type Paginated<T> = {
   data: T[]
   meta: {
     total: number

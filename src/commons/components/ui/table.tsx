@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { forwardRef, Fragment, HTMLAttributes, ReactNode } from 'react'
-import { cn, handleChangeCurrentPage } from '@/commons/utils'
+import { cn, useChangeCurrentPage } from '@/commons/utils'
 import {
   Pagination,
   PaginationContent,
@@ -8,14 +8,15 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/commons/components/ui/pagination'
-import { Paginator } from '@/commons/types'
+import { Paginated } from '@/commons/utils/types'
 
 type TableProps<T> = HTMLAttributes<HTMLTableElement> & {
-  meta: Paginator<T>['meta']
+  meta: Paginated<T>['meta']
   empty?: ReactNode
 }
 
 function Table<T>({ className, ...props }: TableProps<T>) {
+  const handleChangeCurrentPage = useChangeCurrentPage()
   if (!props.meta.total) {
     return props.empty ?? 'No data available'
   }
@@ -46,13 +47,13 @@ function Table<T>({ className, ...props }: TableProps<T>) {
                     <button className="underline">{props.meta.firstPage}</button>
                   </PaginationItem>
                   <PaginationItem>
-                    <button onClick={() => handleChangeCurrentPage(props.meta.currentPage + 1)}>
+                    <button onClick={() => handleChangeCurrentPage(window.location.pathname, props.meta.currentPage + 1)}>
                       {props.meta.firstPage + 1}
                     </button>
                   </PaginationItem>
                   {props.meta.lastPage > 2 && (
                     <PaginationItem>
-                      <button onClick={() => handleChangeCurrentPage(props.meta.lastPage)}>
+                      <button onClick={() => handleChangeCurrentPage(window.location.pathname, props.meta.lastPage)}>
                         {props.meta.lastPage}
                       </button>
                     </PaginationItem>
@@ -62,13 +63,13 @@ function Table<T>({ className, ...props }: TableProps<T>) {
                 <Fragment>
                   {props.meta.currentPage > 2 && (
                     <PaginationItem>
-                      <button onClick={() => handleChangeCurrentPage(props.meta.firstPage)}>
+                      <button onClick={() => handleChangeCurrentPage(window.location.pathname, props.meta.firstPage)}>
                         {props.meta.firstPage}
                       </button>
                     </PaginationItem>
                   )}
                   <PaginationItem>
-                    <button onClick={() => handleChangeCurrentPage(props.meta.lastPage - 1)}>
+                    <button onClick={() => handleChangeCurrentPage(window.location.pathname, props.meta.lastPage - 1)}>
                       {props.meta.lastPage - 1}
                     </button>
                   </PaginationItem>
@@ -79,7 +80,7 @@ function Table<T>({ className, ...props }: TableProps<T>) {
               ) : (
                 <Fragment>
                   <PaginationItem>
-                    <button onClick={() => handleChangeCurrentPage(props.meta.currentPage - 1)}>
+                    <button onClick={() => handleChangeCurrentPage(window.location.pathname, props.meta.currentPage - 1)}>
                       {props.meta.currentPage - 1}
                     </button>
                   </PaginationItem>
@@ -87,7 +88,7 @@ function Table<T>({ className, ...props }: TableProps<T>) {
                     <span className="underline">{props.meta.currentPage}</span>
                   </PaginationItem>
                   <PaginationItem>
-                    <button onClick={() => handleChangeCurrentPage(props.meta.currentPage + 1)}>
+                    <button onClick={() => handleChangeCurrentPage(window.location.pathname, props.meta.currentPage + 1)}>
                       {props.meta.currentPage + 1}
                     </button>
                   </PaginationItem>
