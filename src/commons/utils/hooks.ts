@@ -61,11 +61,27 @@ export type DialogContext = {
   close: () => void
 }
 
-export function useDialog(): DialogContext {
-  const [state, setState] = useState(false)
+export function useDialog(defaultValue = false): DialogContext {
+  const [state, setState] = useState(defaultValue)
 
   const open = () => setState(true)
   const close = () => setState(false)
 
   return { state, setState, open, close }
+}
+
+export type DialogResourceContext<T> = {
+  resource: T | null
+  setResource: (state: T | null) => void
+  open: (value: T) => void
+  close: () => void
+}
+
+export function useDialogResource<T>(defaultValue = null): DialogResourceContext<T> {
+  const [resource, setResource] = useState<T | null>(defaultValue)
+
+  const open = (value: T) => setResource(value)
+  const close = () => setResource(null)
+
+  return { resource, setResource, open, close }
 }

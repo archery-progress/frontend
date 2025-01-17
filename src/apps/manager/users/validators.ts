@@ -24,7 +24,8 @@ export const createUserValidator = z.object({
   path: ['password_confirmation'] // path of error
 })
 
-export const updateUserValidator = z.object({
+export const editUserValidator = z.object({
+  uid: z.string(),
   firstname: z.string().min(2).max(50),
   lastname: z.string().min(2).max(50),
   email: z.string().email(),
@@ -35,4 +36,4 @@ export const updateUserValidator = z.object({
 })
 
 export type CreateUserFormSchema = z.infer<typeof createUserValidator>
-export type UpdateUserFormSchema = z.infer<typeof updateUserValidator>
+export type EditUserFormSchema = z.infer<typeof editUserValidator>
