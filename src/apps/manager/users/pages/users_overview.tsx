@@ -3,7 +3,7 @@ import { ApplicationLayout } from '@/commons/components/layouts/default/layout.t
 import { Searchbar } from '@/commons/components/searchbar.tsx'
 import TableFilter, { ComponentFilter } from '@/commons/components/table_filter.tsx'
 import { AsyncData } from '@/commons/components/async_data.tsx'
-import { Paginated, State } from '@/commons/utils'
+import { Paginated, State, useDialog } from '@/commons/utils'
 import { User, UserStatus } from '@/data/models/user.ts'
 import { useSearchParams } from 'react-router'
 import { useEffect, useState } from 'react'
@@ -11,10 +11,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/commons/components/ui/badge.tsx'
 import { CopyIcon } from 'lucide-react'
 import { toast } from 'sonner'
+import { Button } from '@/commons/components/ui/button.tsx'
+import Protected from '@/commons/components/protected.tsx'
+import { CreateResourceDialog } from '@/commons/components/create_resource_dialog.tsx'
+import { CreateUserForm } from '@/apps/manager/users/components/forms/create_user_form.tsx'
 
 export function UsersOverview() {
   const [searchParams] = useSearchParams()
   const paginatedUsersQuery = usePaginateUsersQuery(searchParams.toString())
+
+  const dialogProps = useDialog()
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
   useEffect(() => {
@@ -47,9 +53,16 @@ export function UsersOverview() {
             )}
           />
 
-          {/*<Protected permissions="manager:users:store">*/}
-          {/*  <CreateUserDialog trigger={<Button size="sm">New user</Button>} />*/}
-          {/*</Protected>*/}
+          <Protected permissions="manager:users:store">
+            <CreateResourceDialog
+              title="New user"
+              description="Create a new user account."
+              trigger={<Button size="sm">New user</Button>}
+              {...dialogProps}
+            >
+              <CreateUserForm {...dialogProps} />
+            </CreateResourceDialog>
+          </Protected>
         </div>
       }
     >

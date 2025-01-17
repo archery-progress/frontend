@@ -1,3 +1,6 @@
+import { Permission } from '@/data/models/permission.ts'
+import { Role } from '@/data/models/role.ts'
+
 export type User = {
   id: number
   uid: string
@@ -6,6 +9,8 @@ export type User = {
   email: string
   status: UserStatus
   type: UserType
+  permissions?: Permission[]
+  roles?: Role[]
 }
 
 export enum UserStatus {
@@ -19,3 +24,9 @@ export enum UserType {
   club = 'club',
   staff = 'staff',
 }
+
+export const userAccountType = {
+  [UserType.user]: 'User',
+  [UserType.club]: 'Club',
+  [UserType.staff]: 'Staff',
+} as const

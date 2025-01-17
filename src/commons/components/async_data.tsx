@@ -13,11 +13,11 @@ export function AsyncData<T>(props: Props<T>) {
     return props.onData(props.source.data)
   }
 
-  if (props.source.isLoading) {
+  if (props.onLoading && props.source.isLoading) {
     return props.onLoading
   }
 
-  if (props.source.isError) {
-    return <div>Error: {JSON.stringify(props.source.error)}</div>
+  if (props.onError && props.source.isError) {
+    return props.onError(props.source.error as never)
   }
 }
