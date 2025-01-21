@@ -16,11 +16,19 @@ export const authApi = createApi({
         method: 'POST',
         body: payload,
       }),
+    }),
+    logout: builder.mutation<void, void>({
+      query: (payload) => ({
+        url: '/v1/authentication/logout',
+        method: 'POST',
+        body: payload,
+      }),
     })
   }),
 })
 
 export const {
   useLoginMutation,
-  useGetAuthenticatedUserQuery
+  useGetAuthenticatedUserQuery,
+  useLogoutMutation,
 } = authApi

@@ -10,7 +10,7 @@ import { PropsWithChildren, ReactNode } from 'react'
 import { DialogResourceContext } from '@/commons/utils'
 
 type Props<T> = DialogResourceContext<T> & {
-  title: string
+  title: string | ReactNode
   description: string
   trigger?: ReactNode
 }

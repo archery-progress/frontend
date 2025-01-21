@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps, useEffect } from 'react'
 import {
   Sidebar,
   SidebarContent,
@@ -13,15 +13,41 @@ import ViewSelector from '@/commons/components/layouts/default/view_selector'
 import { SidebarCollapse, SidebarItem } from '@/commons/components/layouts/default/sidebar_items'
 import { LayoutProps } from '@/commons/components/layouts/default/layout'
 import { sidebarLinks } from '@/commons/components/layouts/default/settings'
-import { useGetAuthenticatedUserQuery } from '@/data/api/auth_api.ts'
+import { useGetAuthenticatedUserQuery, useLogoutMutation } from '@/data/api/auth_api.ts'
 import { AsyncData } from '@/commons/components/async_data.tsx'
 import { User } from '@/data/models/user.ts'
+import { toast } from 'sonner'
+import { toastVariant } from '@/commons/utils'
+import { useDispatch } from 'react-redux'
+import { userSlice } from '@/data/store/user_store.ts'
 
 export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) {
-  const userQuery = useGetAuthenticatedUserQuery()
-  const {mode, ...rest} = props
+  const dispatch = useDispatch()
 
+  const [logout, result] = useLogoutMutation()
+  const userQuery = useGetAuthenticatedUserQuery()
+
+  const {mode, ...rest} = props
   const currentLinks = sidebarLinks[mode]
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      dispatch(userSlice.actions.logout())
+
+      sessionStorage.removeItem('user')
+      sessionStorage.removeItem('token')
+
+      toast.success('Success', {
+        ...toastVariant.success,
+        description: 'User has been created.'
+      })
+    }
+
+    if (result.isError) toast.error('Error', {
+      ...toastVariant.error,
+      description: 'An error occurred while creating the user.'
+    })
+  }, [result])
 
   return (
     <Sidebar {...rest}>
@@ -58,7 +84,7 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
         )}
         <Button
           variant="default"
-          // onClick={() => router.post('/authentication/logout')}
+          onClick={() => logout()}
         >
           <LogOutIcon className="mr-2"/>
           Déconnexion

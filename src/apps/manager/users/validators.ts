@@ -12,28 +12,31 @@ export const createUserValidator = z.object({
   email: z.string().email(),
   password: z.string().min(3),
   password_confirmation: z.string().min(3),
-  roles: z.array(z.string()),
-  structure: z.array(z.string()),
-  type: z.string(),
-  status: z.enum([UserStatus.pending, UserStatus.verified, UserStatus.disabled]),
-  avatar: z.instanceof(File).refine((file) => file.size < 7000000, {
-    message: 'Your resume must be less than 7MB.'
-  })
+  permissions: z.number()
 }).refine((data) => data.password === data.password_confirmation, {
   message: 'Passwords do not match',
   path: ['password_confirmation'] // path of error
 })
 
-export const editUserValidator = z.object({
-  uid: z.string(),
+export const editUserProfilValidator = z.object({
+  id: z.string(),
   firstname: z.string().min(2).max(50),
   lastname: z.string().min(2).max(50),
   email: z.string().email(),
-  roles: z.array(z.string()),
-  structure: z.array(z.string()),
-  type: z.string(),
   status: z.enum([UserStatus.pending, UserStatus.verified, UserStatus.disabled])
 })
 
+export const editUserPermissionsValidator = z.object({
+  permissions: z.number()
+})
+
+export const editUserAssetsValidator = z.object({
+  avatar: z.instanceof(File).refine((file) => file.size < 7000000, {
+    message: 'Your resume must be less than 7MB.'
+  })
+})
+
 export type CreateUserFormSchema = z.infer<typeof createUserValidator>
-export type EditUserFormSchema = z.infer<typeof editUserValidator>
+export type EditUserProfilFormSchema = z.infer<typeof editUserProfilValidator>
+export type EditUserPermissionsFormSchema = z.infer<typeof editUserPermissionsValidator>
+export type EditUserAssetsFormSchema = z.infer<typeof editUserAssetsValidator>

@@ -1,6 +1,13 @@
-import { EditUserFormSchema } from '@/apps/manager/users/validators.ts'
+import { EditUserPermissionsFormSchema, EditUserProfilFormSchema } from '@/apps/manager/users/validators.ts'
 
 export type UpdateUserRequest = {
-  values: EditUserFormSchema
-  uid: string
+  id: string
+  values: EditUserProfilFormSchema | EditUserPermissionsFormSchema
+}
+
+export type UpdateUserAssetsRequest = {
+  id: string
+  values: {
+    avatar?: File
+  }
 }

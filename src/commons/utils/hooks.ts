@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useGetAuthenticatedUserQuery } from '@/data/api/auth_api.ts'
+import { Permission, PermissionKey } from '@/data/models/permission.ts'
 
 /**
  * Custom hook to debounce useEffect
@@ -32,26 +33,22 @@ export function useIsMobile() {
   return !!isMobile
 }
 
-export function useUserPermissions(permissions: string[] | string, strategy?: string): boolean {
+export function useUserPermissions() {
   const { data: user } = useGetAuthenticatedUserQuery()
-  if (!user || !user?.permissions || !user?.roles) return false
-  if (!permissions) return false
+  const { deserialize } = usePermissionBitwise()
 
-  const targetPermissions = Array.isArray(permissions) ? permissions : [permissions]
-  const currentPermissions = [
-    ...user.permissions.map((permission) => permission.uid),
-    ...user.roles.reduce((acc, role) => {
-      return [...acc, ...role.permissions!.map((permission) => permission.uid)]
-    }, [] as string[]),
-  ]
+  function can(permissions: PermissionKey | PermissionKey[]) {
+    if (!user) return false
 
-  const match: { [key: string]: () => boolean } = {
-    'and': () => targetPermissions.every((permission) => currentPermissions.includes(permission)),
-    'or': () => targetPermissions.some((permission) => currentPermissions.includes(permission)),
-    _: () => currentPermissions.some((permission) => permission === targetPermissions[0]),
+    const userPermissions = deserialize(user.permissions)
+    return Array.isArray(permissions)
+      ? permissions.every((permission) => userPermissions.includes(permission))
+      : userPermissions.includes(permissions)
   }
 
-  return (strategy ? match[strategy] : match._)()
+  return {
+    can
+  }
 }
 
 export type DialogContext = {
@@ -84,4 +81,47 @@ export function useDialogResource<T>(defaultValue = null): DialogResourceContext
   const close = () => setResource(null)
 
   return { resource, setResource, open, close }
+}
+
+
+export function usePermissionBitwise() {
+  function serialize(values: PermissionKey[]): number {
+    return values.reduce((acc: number, element: PermissionKey) => acc | Permission[element].value, 0)
+  }
+
+  function deserialize(value: number): PermissionKey[] {
+    const permissionKeys: PermissionKey[] = [];
+
+    Object.entries(Permission).forEach(([key, val]) => {
+      if ((value & val.value) === val.value) {
+        permissionKeys.push(key as PermissionKey);
+      }
+    })
+
+    return permissionKeys;
+  }
+
+  function has(value: number, permission: PermissionKey): boolean {
+    return (value & Permission[permission].value) === Permission[permission].value
+  }
+
+  function add(value: number, permission: PermissionKey): number {
+    return value | Permission[permission].value
+  }
+
+  function remove(value: number, permission: PermissionKey): number {
+    return value & ~Permission[permission].value
+  }
+
+  return {
+    serialize,
+    deserialize,
+    has,
+    add,
+    remove,
+    internals: {
+      INTERNAL_PLATFORM: Permission.INTERNAL_PLATFORM,
+      INTERNAL_MANAGER: Permission.INTERNAL_MANAGER,
+    },
+  }
 }

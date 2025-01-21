@@ -15,8 +15,7 @@ import { Button } from '@/commons/components/ui/button.tsx'
 import Protected from '@/commons/components/protected.tsx'
 import { CreateResourceDialog } from '@/commons/components/create_resource_dialog.tsx'
 import { CreateUserForm } from '@/apps/manager/users/components/forms/create_user_form.tsx'
-import { EditResourceDialog } from '@/commons/components/edit_resource_dialog.tsx'
-import { EditUserForm } from '@/apps/manager/users/components/forms/edit_user_form.tsx'
+import UserUpdateDialog from '@/apps/manager/users/components/user_update_dialog.tsx'
 
 export function UsersOverview() {
   const [searchParams] = useSearchParams()
@@ -86,7 +85,7 @@ export function UsersOverview() {
                 <TableRow>
                   <TableHead className="w-[100px]">ID</TableHead>
                   <TableHead className="w-[300px]">Identité</TableHead>
-                  <TableHead>Type de compte</TableHead>
+                  <TableHead>État du compte</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -94,7 +93,7 @@ export function UsersOverview() {
                 data={users.data}
                 builder={(user) => (
                   <RowBuilder
-                    key={user.uid}
+                    key={user.id}
                     user={user}
                     {...editDialogProps}
                   />
@@ -104,22 +103,14 @@ export function UsersOverview() {
           )}
         />
       </div>
-      <Protected permissions="manager:users:update">
-        <EditResourceDialog
-          title={`Edit user ${editDialogProps.resource?.uid}`}
-          description="Edit the user account."
-          {...editDialogProps}
-        >
-          <EditUserForm {...editDialogProps} />
-        </EditResourceDialog>
-      </Protected>
+      <UserUpdateDialog dialogContext={editDialogProps} />
     </ApplicationLayout>
   )
 }
 
 function RowBuilder(props: DialogResourceContext<User> & { user: User }) {
   async function onCopy(user: User) {
-    await navigator.clipboard.writeText(user.uid)
+    await navigator.clipboard.writeText(user.id)
     toast('Copied to the clipboard', {
       icon: <CopyIcon className="size-4"/>
     })
@@ -129,7 +120,7 @@ function RowBuilder(props: DialogResourceContext<User> & { user: User }) {
     <TableRow>
       <TableCell className="font-medium whitespace-nowrap !text-xs">
         <Badge onClick={() => onCopy(props.user)} variant="outline" className="cursor-pointer">
-          {props.user.uid}
+          {props.user.id}
           <CopyIcon className="ml-2 -mr-1 size-2"/>
         </Badge>
       </TableCell>
@@ -140,7 +131,6 @@ function RowBuilder(props: DialogResourceContext<User> & { user: User }) {
         onClick={() => props.open(props.user)}
         className="flex items-center gap-x-2 cursor-pointer"
       >
-        <Badge variant="outline">{props.user.type}</Badge>
         {props.user.status === UserStatus.disabled && (
           <Badge variant="destructive">Deactivate</Badge>
         )}

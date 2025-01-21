@@ -1,5 +1,4 @@
 export type Structure = {
-  id: number
-  uid: string
+  id: string
   name: string
 }

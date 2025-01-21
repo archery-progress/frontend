@@ -1,12 +1,7 @@
-import { Permission } from '@/data/models/permission.ts'
-
 export type Role = {
-  id: number
-  uid: string
+  id: string
   name: string
-  description: string | null
+  permissions: number
   createdAt: string
   updatedAt: string | null
-
-  permissions?: Permission[]
 }
