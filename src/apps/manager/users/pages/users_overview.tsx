@@ -33,14 +33,14 @@ export function UsersOverview() {
       mode="manager"
       breadcrumb={[
         {label: 'Manager', url: '/manager'},
-        {label: 'Users overview', url: '/manager/accounts/users'}
+        {label: 'Users overview', url: '/manager/users'}
       ]}
       trailing={
         <div className="flex items-center justify-end gap-x-2">
           <Searchbar
             placeholder="Search for a user..."
             searchKey="search"
-            redirect="/manager/accounts/users/overview"
+            redirect="/manager/users/overview"
           />
 
           <AsyncData<Paginated<User>>
@@ -49,7 +49,7 @@ export function UsersOverview() {
               <TableFilter
                 itemPerPage={users.meta.perPage}
                 resources={filterOptions}
-                resourceRoute="/manager/accounts/users/overview"
+                resourceRoute="/manager/users/overview"
               />
             )}
           />

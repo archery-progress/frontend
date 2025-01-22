@@ -6,7 +6,7 @@ export function Dashboard() {
       mode="archery"
       breadcrumb={[
         {label: 'Manager', url: '/manager'},
-        {label: 'Users overview', url: '/manager/accounts/users'}
+        {label: 'Users overview', url: '/manager/users'}
       ]}
     >
       Dashboard

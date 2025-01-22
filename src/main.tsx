@@ -23,10 +23,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path="dashboard" element={<Dashboard/>}/>
           </Route>
           <Route path="manager" element={<AuthenticatedLayout />}>
-            <Route path="accounts">
-              <Route path="users">
-                <Route path="overview" element={<UsersOverview/>}/>
-              </Route>
+            <Route path="users">
+              <Route path="overview" element={<UsersOverview/>}/>
             </Route>
           </Route>
         </Routes>
