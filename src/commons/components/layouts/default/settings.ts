@@ -4,17 +4,17 @@ export type SidebarLink = {
   items?: { title: string; url: string }[]
 }
 
-export const platformLinks: SidebarLink[] = [
+export const archeryLinks: SidebarLink[] = [
   {
     title: "Mon suivis d'archer",
     items: [
-      { title: 'Mes séances', url: '/platform/sessions/overview' },
-      { title: 'Mes entrainements', url: '/platform/practices/overview' },
+      { title: 'Mes séances', url: '/archery/sessions/overview' },
+      { title: 'Mes entrainements', url: '/archery/practices/overview' },
     ],
   },
 ]
 
-export const guildLinks: SidebarLink[] = [
+export const structureLinks: SidebarLink[] = [
   {
     title: 'Association',
     items: [
@@ -59,6 +59,6 @@ export const managerLinks = [
 
 export const sidebarLinks = {
   manager: managerLinks,
-  platform: platformLinks,
-  guild: guildLinks,
+  archery: archeryLinks,
+  structure: structureLinks,
 }
