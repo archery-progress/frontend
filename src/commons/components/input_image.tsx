@@ -11,7 +11,7 @@ type Props = Omit<ComponentProps<'input'>, 'value' | 'defaultValue'> & {
 }
 
 export const InputImage = forwardRef<HTMLInputElement, Props>(
-  ({ className, ...props }) => {
+  ({ className, ...props }, _) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const [imageData, setImageData] = useState<string | undefined>(props.defaultValue)
 

@@ -9,7 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/commons/components/ui/breadcrumb'
-import { Toaster } from '@/commons/components/ui/sonner'
 import { AppSidebar } from '@/commons/components/layouts/default/app_sidebar'
 import { sidebarLinks } from '@/commons/components/layouts/default/settings'
 
@@ -59,7 +58,6 @@ export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
           {props.trailing && <div className="hidden md:block flex-1 items-center w-full">{props.trailing}</div>}
         </header>
         {props.children}
-        <Toaster/>
       </SidebarInset>
     </SidebarProvider>
   )

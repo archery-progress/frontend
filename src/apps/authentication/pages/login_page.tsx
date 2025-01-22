@@ -9,10 +9,13 @@ import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { useDispatch } from 'react-redux'
 import { userSlice } from '@/data/store/user_store.ts'
+import { useNavigate } from 'react-router'
 
 export default function LoginPage() {
-  const [handleLogin, result] = useLoginMutation()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const [handleLogin, result] = useLoginMutation()
 
   useEffect(() => {
     if (result.isSuccess) {
@@ -20,6 +23,8 @@ export default function LoginPage() {
 
       sessionStorage.setItem('user', JSON.stringify(result.data.user))
       sessionStorage.setItem('token', result.data.token)
+
+      navigate('/manager/accounts/users/overview')
 
       toast.success('Success', {
         ...toastVariant.success,
