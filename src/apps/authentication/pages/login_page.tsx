@@ -24,7 +24,7 @@ export default function LoginPage() {
       sessionStorage.setItem('user', JSON.stringify(result.data.user))
       sessionStorage.setItem('token', result.data.token)
 
-      navigate('/manager/accounts/users/overview')
+      navigate('/archery/dashboard')
 
       toast.success('Success', {
         ...toastVariant.success,

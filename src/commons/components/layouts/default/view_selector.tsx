@@ -32,7 +32,7 @@ export default function ViewSelector(props: Props) {
   ]
 
   const currentView = buildViews.find((view) => {
-    return pathname.startsWith('/guilds')
+    return pathname.startsWith('/platform')
       ? pathname.includes(view.id)
       : view.id === value
   })
@@ -81,13 +81,13 @@ export default function ViewSelector(props: Props) {
 
 const views = [
   {
-    id: 'platform',
+    id: 'archery',
     label: 'Mon espace',
-    href: '/platform/practices/overview',
+    href: '/archery/dashboard',
   },
   {
     id: 'manager',
     label: 'Administrateur',
-    href: '/manager/users/overview',
+    href: '/manager/accounts/users/overview',
   },
 ]

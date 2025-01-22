@@ -9,6 +9,7 @@ import '@/commons/assets/css/app.css'
 import AuthenticationLayout from '@/apps/authentication/components/layout.tsx'
 import AuthenticatedLayout from '@/commons/components/layouts/authenticated_layout.tsx'
 import { Toaster } from '@/commons/components/ui/sonner.tsx'
+import { Dashboard } from '@/apps/archery/pages/dashboard.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,6 +18,9 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="authentication" element={<AuthenticationLayout/>}>
             <Route path="login" element={<LoginPage/>}/>
+          </Route>
+          <Route path="archery" element={<AuthenticatedLayout />}>
+            <Route path="dashboard" element={<Dashboard/>}/>
           </Route>
           <Route path="manager" element={<AuthenticatedLayout />}>
             <Route path="accounts">

@@ -76,7 +76,7 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
       </SidebarContent>
       <SidebarRail/>
       <SidebarFooter>
-        {mode === 'platform' && (
+        {mode === 'archery' && (
           <Button variant="outline">
             <User2Icon className="mr-2"/>
             Mon compte
