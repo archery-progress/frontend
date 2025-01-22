@@ -5,8 +5,8 @@ export function Dashboard() {
     <ApplicationLayout
       mode="archery"
       breadcrumb={[
-        {label: 'Manager', url: '/manager'},
-        {label: 'Users overview', url: '/manager/users'}
+        {label: 'Mon espace', url: '/archery'},
+        {label: 'Accueil', url: '/archery/dashboard'}
       ]}
     >
       Dashboard
