@@ -9,7 +9,8 @@ import '@/commons/assets/css/app.css'
 import AuthenticationLayout from '@/apps/authentication/components/layout.tsx'
 import AuthenticatedLayout from '@/commons/components/layouts/authenticated_layout.tsx'
 import { Toaster } from '@/commons/components/ui/sonner.tsx'
-import { Dashboard } from '@/apps/archery/pages/dashboard.tsx'
+import { ArcheryDashboard } from '@/apps/archery/pages/archery_dashboard.tsx'
+import { PlatformDashboard } from '@/apps/platform/pages/platform_dashboard.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -20,7 +21,12 @@ createRoot(document.getElementById('root')!).render(
             <Route path="login" element={<LoginPage/>}/>
           </Route>
           <Route path="archery" element={<AuthenticatedLayout />}>
-            <Route path="dashboard" element={<Dashboard/>}/>
+            <Route path="dashboard" element={<ArcheryDashboard/>}/>
+          </Route>
+          <Route path="platform" element={<AuthenticatedLayout />}>
+            <Route path=":structureId">
+              <Route path="overview" element={<PlatformDashboard/>}/>
+            </Route>
           </Route>
           <Route path="manager" element={<AuthenticatedLayout />}>
             <Route path="users">

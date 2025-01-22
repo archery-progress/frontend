@@ -64,7 +64,13 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
           />
           <ScrollBar orientation="horizontal"/>
         </ScrollArea>
-        <ViewSelector currentView={mode}/>
+        <AsyncData<User>
+          source={userQuery}
+          onLoading={<p>Loading...</p>}
+          onData={(user) => (
+            <ViewSelector currentView={mode} user={user} />
+          )}
+        />
       </SidebarHeader>
       <SidebarContent className="py-5 gap-0">
         {currentLinks.map((item) => {

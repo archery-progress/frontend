@@ -14,7 +14,7 @@ export const archeryLinks: SidebarLink[] = [
   },
 ]
 
-export const structureLinks: SidebarLink[] = [
+export const platformLinks: SidebarLink[] = [
   {
     title: 'Association',
     items: [
@@ -60,5 +60,5 @@ export const managerLinks = [
 export const sidebarLinks = {
   manager: managerLinks,
   archery: archeryLinks,
-  structure: structureLinks,
+  platform: platformLinks,
 }

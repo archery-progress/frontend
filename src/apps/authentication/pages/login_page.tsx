@@ -21,9 +21,7 @@ export default function LoginPage() {
     if (result.isSuccess) {
       dispatch(userSlice.actions.setUser(result.data))
 
-      sessionStorage.setItem('user', JSON.stringify(result.data.user))
       sessionStorage.setItem('token', result.data.token)
-
       navigate('/archery/dashboard')
 
       toast.success('Success', {

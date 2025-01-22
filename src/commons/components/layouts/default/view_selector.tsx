@@ -5,9 +5,11 @@ import { Check, ChevronsUpDown } from 'lucide-react'
 import { Command, CommandGroup, CommandItem, CommandList } from '@/commons/components/ui/command'
 import { cn } from '@/commons/utils'
 import { useLocation, useNavigate } from 'react-router'
+import { User } from '@/data/models/user.ts'
 
 type Props = {
   currentView: string
+  user: User
 }
 
 export default function ViewSelector(props: Props) {
@@ -19,16 +21,11 @@ export default function ViewSelector(props: Props) {
 
   const buildViews = [
     ...views,
-    {
-      id: '1',
-      label: 'Mon club 1',
-      href: '/guilds/1/members/overview',
-    },
-    {
-      id: '2',
-      label: 'Mon club 2',
-      href: '/guilds/2/members/overview',
-    },
+    ...props.user.members.map((member) => ({
+      id: member.structureId,
+      label: member.structure.name,
+      href: `/platform/${member.structureId}/overview`,
+    })),
   ]
 
   const currentView = buildViews.find((view) => {
