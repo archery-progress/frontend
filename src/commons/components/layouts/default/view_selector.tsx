@@ -88,6 +88,6 @@ const views = [
   {
     id: 'manager',
     label: 'Administrateur',
-    href: '/manager/accounts/users/overview',
+    href: '/manager/users/overview',
   },
 ]
