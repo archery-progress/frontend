@@ -20,15 +20,17 @@ import { toast } from 'sonner'
 import { toastVariant } from '@/commons/utils'
 import { useDispatch } from 'react-redux'
 import { userSlice } from '@/data/store/user_store.ts'
+import { useParams } from 'react-router'
 
 export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) {
   const dispatch = useDispatch()
+  const params = useParams()
 
   const [logout, result] = useLogoutMutation()
   const userQuery = useGetAuthenticatedUserQuery()
 
   const {mode, ...rest} = props
-  const currentLinks = sidebarLinks[mode]
+  const currentLinks = sidebarLinks(params.structureId)[mode]
 
   useEffect(() => {
     if (result.isSuccess) {
