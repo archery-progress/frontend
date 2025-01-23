@@ -59,7 +59,14 @@ export default function ViewSelector(props: Props) {
                   onSelect={(currentValue) => {
                     setValue(currentValue)
                     setOpen(false)
-                    navigate(view.href)
+
+                    if (view.href.startsWith('http')) {
+                      window.location.href = view.href
+                    } else {
+                      navigate(view.href, {
+                        relative: 'route'
+                      })
+                    }
                   }}
                 >
                   <Check
@@ -85,6 +92,6 @@ const views = [
   {
     id: 'manager',
     label: 'Administrateur',
-    href: '/manager/users/overview',
+    href: import.meta.env.VITE_MANAGER_BASE_URL + '/users/overview',
   },
 ]
