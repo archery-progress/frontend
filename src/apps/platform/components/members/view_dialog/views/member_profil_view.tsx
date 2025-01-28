@@ -7,12 +7,22 @@ import {
   BreadcrumbSeparator
 } from '@/commons/components/ui/breadcrumb.tsx'
 import { Member } from '@/data/models/user.ts'
+import { Input } from '@/commons/components/ui/input.tsx'
+import { Label } from '@/commons/components/ui/label.tsx'
+import { DateTime } from 'luxon'
 
 type Props = {
   member: Member
 }
 
 export default function MemberProfilView(props: Props) {
+  function calculateCurrentAge(birthdate: string) {
+    return DateTime.now()
+      .diff(DateTime.fromISO(birthdate), 'years')
+      .years.toString()
+      .split('.')[0]
+  }
+
   return (
     <Fragment>
       <header
@@ -34,12 +44,27 @@ export default function MemberProfilView(props: Props) {
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-        {Array.from({length: 10}).map((_, i) => (
-          <div
-            key={i}
-            className="aspect-video max-w-3xl rounded-xl bg-muted/50"
-          />
-        ))}
+        <div className="flex gap-5">
+          <div className="aspect-video size-32 rounded-md overflow-hidden">
+            <img src={props.member.user.avatar} alt=""/>
+          </div>
+          <div className="flex flex-1 flex-col gap-4 w-full">
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label>Prénom</Label>
+              <Input className="pointer-events-none" defaultValue={props.member.user.firstname}/>
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label>Nom</Label>
+              <Input className="pointer-events-none" defaultValue={props.member.user.lastname}/>
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label>
+                Date de naissance <span className="text-xs">({calculateCurrentAge(props.member.user.birthdate)} ans)</span>
+              </Label>
+              <Input className="pointer-events-none" defaultValue={props.member.user.birthdate}/>
+            </div>
+          </div>
+        </div>
       </div>
     </Fragment>
   )
