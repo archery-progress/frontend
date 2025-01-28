@@ -24,6 +24,8 @@ export type Member = {
   structureId: string
   structure: Structure
   roles: Role[]
+  user: User
+  permissions: number
   createdAt: string
   updatedAt: string | null
 }

@@ -105,6 +105,12 @@ export function usePermissionBitwise() {
     return (value & Permission[permission].value) === Permission[permission].value
   }
 
+  function hasOne(value: number, permissions: PermissionKey[]): boolean {
+    return permissions.some((permission) => {
+      return has(value, permission)
+    })
+  }
+
   function add(value: number, permission: PermissionKey): number {
     return value | Permission[permission].value
   }
@@ -117,6 +123,7 @@ export function usePermissionBitwise() {
     serialize,
     deserialize,
     has,
+    hasOne,
     add,
     remove,
     internals: {

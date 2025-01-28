@@ -72,7 +72,6 @@ export function useSearchByKey() {
   function searchByKey(route: string, searchKey: string, value: string | number | undefined, source?: URLSearchParams) {
     const payload = getCurrentParameters(source)
 
-    console.log(value)
     if (value) {
       payload[searchKey] = value.toString()
     }

@@ -10,6 +10,8 @@ import AuthenticatedLayout from '@/commons/components/layouts/authenticated_layo
 import { Toaster } from '@/commons/components/ui/sonner'
 import { ArcheryDashboard } from '@/apps/archery/pages/archery_dashboard'
 import { PlatformDashboard } from '@/apps/platform/pages/platform_dashboard'
+import { MembersOverview } from '@/apps/platform/pages/members/members_overview.tsx'
+import MemberView from '@/apps/platform/pages/members/member_view.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -22,10 +24,10 @@ createRoot(document.getElementById('root')!).render(
           <Route path="archery" element={<AuthenticatedLayout />}>
             <Route path="dashboard" element={<ArcheryDashboard/>}/>
           </Route>
-          <Route path="platform" element={<AuthenticatedLayout />}>
-            <Route path=":structureId">
-              <Route path="overview" element={<PlatformDashboard/>}/>
-            </Route>
+          <Route path="structures/:structureId" element={<AuthenticatedLayout />}>
+            <Route path="overview" element={<PlatformDashboard/>}/>
+            <Route path="members/overview" element={<MembersOverview/>} />
+            <Route path="members/:memberId/view" element={<MemberView/>} />
           </Route>
         </Routes>
       </BrowserRouter>

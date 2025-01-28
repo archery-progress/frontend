@@ -1,11 +1,17 @@
-import { useState } from 'react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/commons/components/ui/popover'
-import { Button } from '@/commons/components/ui/button'
-import { Check, ChevronsUpDown } from 'lucide-react'
-import { Command, CommandGroup, CommandItem, CommandList } from '@/commons/components/ui/command'
-import { cn } from '@/commons/utils'
+import { ChevronsUpDown, PlusIcon } from 'lucide-react'
+import { useIsMobile, usePermissionBitwise } from '@/commons/utils'
 import { useLocation, useNavigate } from 'react-router'
 import { User } from '@/data/models/user.ts'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/commons/components/ui/sidebar.tsx'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/commons/components/ui/dropdown-menu.tsx'
+import { PermissionKey } from '@/data/models/permission.ts'
 
 type Props = {
   currentView: string
@@ -13,85 +19,107 @@ type Props = {
 }
 
 export default function ViewSelector(props: Props) {
-  const { pathname } = useLocation()
+  const {pathname} = useLocation()
+  const {hasOne} = usePermissionBitwise()
+  const isMobile = useIsMobile()
+
   const navigate = useNavigate()
 
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState<string>(props.currentView)
+  const manageableStructures = props.user.members.filter((member) => {
+    const permissions: PermissionKey[] = ['ADMINISTRATOR', 'MANAGE_ROLES', 'MANAGE_MEMBERS', 'MANAGE_NOTIFICATIONS', 'MANAGE_PRACTICES', 'MANAGE_SETTINGS', 'VIEW_MEMBERS', 'VIEW_LOGS']
+    return hasOne(member.permissions, permissions)
+  })
 
   const buildViews = [
-    ...views,
-    ...props.user.members.map((member) => ({
+    {
+      id: 'archery',
+      label: 'Mon espace',
+      logo: props.user.avatar,
+      href: '/archery/dashboard'
+    },
+    ...manageableStructures.map((member) => ({
       id: member.structureId,
       label: member.structure.name,
-      href: `/platform/${member.structureId}/overview`,
-    })),
+      logo: member.structure.logo,
+      href: `/structures/${member.structureId}/overview`
+    }))
   ]
 
   const currentView = buildViews.find((view) => {
-    return pathname.startsWith('/platform')
+    return pathname.startsWith('/structures')
       ? pathname.includes(view.id)
-      : view.id === value
+      : view.id === props.currentView
   })
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="flex !justify-start !px-3 w-[200px]"
-        >
-          <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
-          {currentView?.label}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandList>
-            <CommandGroup>
-              {buildViews.map((view) => (
-                <CommandItem
-                  key={view.id}
-                  value={view.id}
-                  className="cursor-pointer"
-                  onSelect={(currentValue) => {
-                    setValue(currentValue)
-                    setOpen(false)
-
-                    if (view.href.startsWith('http')) {
-                      window.location.href = view.href
-                    } else {
-                      navigate(view.href, {
-                        relative: 'route'
-                      })
-                    }
-                  }}
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <div
+                className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <img src={props.user.avatar} className="size-8 rounded" alt={props.user.firstname}/>
+              </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">
+                  {props.user.firstname} {props.user.lastname}
+                </span>
+                <span className="truncate text-xs">{currentView?.label}</span>
+              </div>
+              {manageableStructures.length > 0 && <ChevronsUpDown className="ml-auto"/>}
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          {manageableStructures.length > 0 && (
+            <DropdownMenuContent
+              className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+              align="start"
+              side={isMobile ? 'bottom' : 'right'}
+              sideOffset={4}
+            >
+              <DropdownMenuLabel className="text-xs text-muted-foreground">
+                Vue actuelle
+              </DropdownMenuLabel>
+              {buildViews.map((structure) => (
+                <DropdownMenuItem
+                  key={structure.id}
+                  onClick={() => navigate(structure.href)}
+                  className="flex items-center gap-2 p-2 cursor-pointer"
                 >
-                  <Check
-                    className={cn('mr-2 h-4 w-4', view.id === value ? 'opacity-100' : 'opacity-0')}
-                  />
-                  {view.label}
-                </CommandItem>
+                  <div className="flex size-8 items-center justify-center rounded-sm border">
+                    <img src={structure.logo ?? 'https://placehold.co/32'} className="size-8 object-cover rounded" alt={structure.label}/>
+                  </div>
+                  <div className="flex-1">{structure.label}</div>
+                </DropdownMenuItem>
               ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+              <DropdownMenuSeparator/>
+              <DropdownMenuItem className="gap-2 p-2">
+                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                  <PlusIcon className="size-4"/>
+                </div>
+                <div className="font-medium text-muted-foreground">Add team</div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          )}
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
   )
 }
 
-const views = [
-  {
-    id: 'archery',
-    label: 'Mon espace',
-    href: '/archery/dashboard',
-  },
-  {
-    id: 'manager',
-    label: 'Administrateur',
-    href: import.meta.env.VITE_MANAGER_BASE_URL + '/users/overview',
-  },
-]
+// const views = [
+//   {
+//     id: 'archery',
+//     label: 'Mon espace',
+//     logo: '/assets/images/logos/archery.svg',
+//     href: '/archery/dashboard'
+//   },
+//   {
+//     id: 'manager',
+//     label: 'Administrateur',
+//     href: import.meta.env.VITE_MANAGER_BASE_URL + '/users/overview'
+//   }
+// ]

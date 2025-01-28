@@ -10,20 +10,20 @@ import {
   BreadcrumbSeparator
 } from '@/commons/components/ui/breadcrumb'
 import { AppSidebar } from '@/commons/components/layouts/default/app_sidebar'
-import { sidebarLinks } from '@/commons/components/layouts/default/settings'
+import { ViewMode } from '@/commons/components/layouts/default/settings.ts'
 
 export type LayoutProps = {
   breadcrumb?: { label: string; url?: string }[]
   trailing?: ReactNode
-  mode: keyof typeof sidebarLinks
+  mode: ViewMode
 }
 
 export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
   return (
     <SidebarProvider>
       <AppSidebar {...props} />
-      <SidebarInset>
-        <header className="flex sticky z-10 top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
+      <SidebarInset className="bg-background">
+        <header className="flex sticky z-10 top-0 h-16 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1"/>
           {props.breadcrumb && (
             <div className="hidden md:flex items-center">

@@ -1,18 +1,10 @@
-import { ComponentProps, useEffect } from 'react'
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail
-} from '@/commons/components/ui/sidebar'
-import { ScrollArea, ScrollBar } from '@/commons/components/ui/scroll-area'
+import { ComponentProps, Fragment, useEffect } from 'react'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/commons/components/ui/sidebar'
 import { Button } from '@/commons/components/ui/button'
 import { LogOutIcon, User2Icon } from 'lucide-react'
 import ViewSelector from '@/commons/components/layouts/default/view_selector'
-import { SidebarCollapse, SidebarItem } from '@/commons/components/layouts/default/sidebar_items'
 import { LayoutProps } from '@/commons/components/layouts/default/layout'
-import { sidebarLinks } from '@/commons/components/layouts/default/settings'
+import { platformSettingLinks, sidebarLinks } from '@/commons/components/layouts/default/settings.ts'
 import { useGetAuthenticatedUserQuery, useLogoutMutation } from '@/data/api/auth_api.ts'
 import { AsyncData } from '@/commons/components/async_data.tsx'
 import { User } from '@/data/models/user.ts'
@@ -21,6 +13,8 @@ import { toastVariant } from '@/commons/utils'
 import { useDispatch } from 'react-redux'
 import { userSlice } from '@/data/store/user_store.ts'
 import { useParams } from 'react-router'
+import { BasicView } from '@/commons/components/layouts/sidebar_views/basic_view.tsx'
+import { GroupView } from '@/commons/components/layouts/sidebar_views/group_view.tsx'
 
 export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) {
   const dispatch = useDispatch()
@@ -52,20 +46,8 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
   }, [result])
 
   return (
-    <Sidebar {...rest}>
-      <SidebarHeader className="px-4 pt-4">
-        <ScrollArea className="w-96 whitespace-nowrap">
-          <AsyncData<User>
-            source={userQuery}
-            onLoading={<p>Loading...</p>}
-            onData={(data) => (
-              <p className="text-lg font-bold">
-                {data.lastname} {data.lastname}
-              </p>
-            )}
-          />
-          <ScrollBar orientation="horizontal"/>
-        </ScrollArea>
+    <Sidebar variant="inset" {...rest}>
+      <SidebarHeader className="px-2 pt-4">
         <AsyncData<User>
           source={userQuery}
           onLoading={<p>Loading...</p>}
@@ -75,12 +57,12 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
         />
       </SidebarHeader>
       <SidebarContent className="py-5 gap-0">
-        {currentLinks.map((item) => {
-          if (item.items) {
-            return <SidebarCollapse key={item.title} item={item}/>
-          }
-          return <SidebarItem key={item.title} item={item}/>
-        })}
+        {mode === 'platform' && (
+          <Fragment>
+            <GroupView title="Vie de l'association" items={currentLinks} />
+            <BasicView item={platformSettingLinks(params.structureId)} />
+          </Fragment>
+        )}
       </SidebarContent>
       <SidebarRail/>
       <SidebarFooter>
