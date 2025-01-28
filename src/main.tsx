@@ -11,7 +11,6 @@ import { Toaster } from '@/commons/components/ui/sonner'
 import { ArcheryDashboard } from '@/apps/archery/pages/archery_dashboard'
 import { PlatformDashboard } from '@/apps/platform/pages/platform_dashboard'
 import { MembersOverview } from '@/apps/platform/pages/members/members_overview.tsx'
-import MemberView from '@/apps/platform/pages/members/member_view.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -27,7 +26,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="structures/:structureId" element={<AuthenticatedLayout />}>
             <Route path="overview" element={<PlatformDashboard/>}/>
             <Route path="members/overview" element={<MembersOverview/>} />
-            <Route path="members/:memberId/view" element={<MemberView/>} />
+            <Route path="members/:memberId/view" element={<MembersOverview/>} />
           </Route>
         </Routes>
       </BrowserRouter>

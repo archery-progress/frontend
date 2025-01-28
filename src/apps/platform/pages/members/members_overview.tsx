@@ -8,9 +8,9 @@ import { AsyncData } from '@/commons/components/async_data.tsx'
 import TableFilter from '@/commons/components/table_filter.tsx'
 import { Searchbar } from '@/commons/components/searchbar.tsx'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/commons/components/ui/table.tsx'
-import { CopyIcon } from 'lucide-react'
 import { Badge } from '@/commons/components/ui/badge.tsx'
-import { toast } from 'sonner'
+import { DateTime } from 'luxon'
+import MemberViewDialog from '@/apps/platform/components/members/view_dialog/member_view_dialog.tsx'
 
 export function MembersOverview() {
   const params = useParams()
@@ -70,10 +70,11 @@ export function MembersOverview() {
             <Table meta={members.meta} empty={<EmptyData/>}>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[100px]">ID</TableHead>
-                  <TableHead className="w-[300px]">Identité</TableHead>
-                  <TableHead>État du compte</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="w-[100px]">Identité</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead className="text-right">
+                    Dernière mise à jour
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody
@@ -91,6 +92,7 @@ export function MembersOverview() {
           )}
         />
       </div>
+      <MemberViewDialog/>
     </ApplicationLayout>
   )
 }
@@ -98,26 +100,23 @@ export function MembersOverview() {
 function RowBuilder(props: DialogResourceContext<Member> & { structureId?: string, member: Member }) {
   const navigate = useNavigate()
 
-  async function onCopy(user: Member) {
-    await navigator.clipboard.writeText(user.id)
-    toast('Copied to the clipboard', {
-      icon: <CopyIcon className="size-4"/>
-    })
-  }
-
   return (
-    <TableRow>
+    <TableRow
+      className="cursor-pointer"
+      onClick={() => navigate(`/structures/${props.structureId}/members/${props.member.id}/view`)}
+    >
       <TableCell className="font-medium whitespace-nowrap !text-xs">
-        <Badge onClick={() => onCopy(props.member)} variant="outline" className="cursor-pointer">
-          {props.member.id}
-          <CopyIcon className="ml-2 -mr-1 size-2"/>
+        <Badge variant="outline">
+          {props.member.user.firstname} {props.member.user.lastname}
         </Badge>
       </TableCell>
-      <TableCell
-        onClick={() => navigate(`/structures/${props.structureId}/members/${props.member.id}/view`)}
-        className="text-right cursor-pointer"
-      >
-        Actions
+      <TableCell>
+        <p>{props.member.user.email}</p>
+      </TableCell>
+      <TableCell className="text-right">
+        <p className="text-sm">
+          {DateTime.fromISO(props.member.updatedAt ?? props.member.createdAt).toLocaleString(DateTime.DATETIME_MED)}
+        </p>
       </TableCell>
     </TableRow>
   )
