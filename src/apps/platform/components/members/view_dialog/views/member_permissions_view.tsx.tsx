@@ -43,21 +43,23 @@ export default function MemberRolesView(props: Props) {
   return (
     <Fragment>
       <header
-        className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-        <div className="flex items-center gap-2 px-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbPage>
-                  {props.member.user.firstname} {props.member.user.lastname}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block"/>
-              <BreadcrumbItem>
-                <BreadcrumbPage>Roles</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+        className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <div>
+          <div className="flex items-center gap-2 px-4 h-12">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbPage>
+                    {props.member.user.firstname} {props.member.user.lastname}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block"/>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Roles</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
@@ -66,7 +68,7 @@ export default function MemberRolesView(props: Props) {
             onChange={(permissions) => handlePermissionUpdate({
               structureId: props.member.structure.id,
               memberId: props.member.id,
-              data: { permissions }
+              data: {permissions}
             })}
           />
         </Form>
@@ -111,7 +113,7 @@ function MemberPermissionForm(props: FormProps) {
                           htmlFor={key}
                           className={cn(opacity, 'flex items-center justify-between gap-2 w-full cursor-pointer')}
                         >
-                          <div className="flex items-center">
+                          <div className="flex items-center gap-2">
                             <div
                               className={cn(
                                 'size-8 rounded flex items-center justify-center',
