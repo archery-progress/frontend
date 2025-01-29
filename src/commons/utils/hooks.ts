@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useGetAuthenticatedUserQuery } from '@/data/api/auth_api.ts'
 import { Permission, PermissionKey } from '@/data/models/permission.ts'
+import { toast } from 'sonner'
+import { toastVariant } from '@/commons/utils/utils.tsx'
+import { TypedUseQueryHookResult } from '@reduxjs/toolkit/query/react'
 
 /**
  * Custom hook to debounce useEffect
@@ -25,17 +28,17 @@ export function useIsMobile() {
     const onChange = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     }
-    mql.addEventListener("change", onChange)
+    mql.addEventListener('change', onChange)
     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    return () => mql.removeEventListener("change", onChange)
+    return () => mql.removeEventListener('change', onChange)
   }, [])
 
   return !!isMobile
 }
 
 export function useUserPermissions() {
-  const { data: user } = useGetAuthenticatedUserQuery()
-  const { deserialize } = usePermissionBitwise()
+  const {data: user} = useGetAuthenticatedUserQuery()
+  const {deserialize} = usePermissionBitwise()
 
   function can(permissions: PermissionKey | PermissionKey[]) {
     if (!user) return false
@@ -64,7 +67,7 @@ export function useDialog(defaultValue = false): DialogContext {
   const open = () => setState(true)
   const close = () => setState(false)
 
-  return { state, setState, open, close }
+  return {state, setState, open, close}
 }
 
 export type DialogResourceContext<T> = {
@@ -80,7 +83,7 @@ export function useDialogResource<T>(defaultValue = null): DialogResourceContext
   const open = (value: T) => setResource(value)
   const close = () => setResource(null)
 
-  return { resource, setResource, open, close }
+  return {resource, setResource, open, close}
 }
 
 
@@ -90,15 +93,15 @@ export function usePermissionBitwise() {
   }
 
   function deserialize(value: number): PermissionKey[] {
-    const permissionKeys: PermissionKey[] = [];
+    const permissionKeys: PermissionKey[] = []
 
     Object.entries(Permission).forEach(([key, val]) => {
       if ((value & val.value) === val.value) {
-        permissionKeys.push(key as PermissionKey);
+        permissionKeys.push(key as PermissionKey)
       }
     })
 
-    return permissionKeys;
+    return permissionKeys
   }
 
   function has(value: number, permission: PermissionKey): boolean {
@@ -128,7 +131,49 @@ export function usePermissionBitwise() {
     remove,
     internals: {
       INTERNAL_PLATFORM: Permission.INTERNAL_PLATFORM,
-      INTERNAL_MANAGER: Permission.INTERNAL_MANAGER,
-    },
+      INTERNAL_MANAGER: Permission.INTERNAL_MANAGER
+    }
   }
+}
+
+export function useCurrentMemberPermissions(structureId?: string) {
+  const {data: user} = useGetAuthenticatedUserQuery()
+  const {deserialize} = usePermissionBitwise()
+
+  function can(permissions: PermissionKey | PermissionKey[]) {
+    if (!user) return false
+
+    const userPermissions = deserialize(user.permissions)
+    return Array.isArray(permissions)
+      ? permissions.every((permission) => userPermissions.includes(permission))
+      : userPermissions.includes(permissions)
+  }
+
+  return {
+    can
+  }
+}
+
+type ResultQueryType<T> = TypedUseQueryHookResult<T, void, any, any>
+type UseResultQueryProps = {
+  onSuccess: string
+  onError: string
+}
+
+export function useQueryResult<T>(result: ResultQueryType<T>, props: UseResultQueryProps) {
+  useEffect(() => {
+    if (result.isSuccess) {
+      toast.success('Success', {
+        ...toastVariant.success,
+        description: props.onSuccess
+      })
+    }
+
+    if (result.isError) {
+      toast.error('Error', {
+        ...toastVariant.error,
+        description: props.onError
+      })
+    }
+  }, [result])
 }
