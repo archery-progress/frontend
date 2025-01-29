@@ -2,7 +2,12 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from './index'
 import { Paginated } from '@/commons/utils'
 import { Member, User } from '@/data/models/user.ts'
-import { GetMemberRequest, GetMembersRequest, MutateRoleMemberRequest } from '@/data/contracts/member.ts'
+import {
+  GetMemberRequest,
+  GetMembersRequest,
+  MutateMemberRequest,
+  MutateRoleMemberRequest
+} from '@/data/contracts/member.ts'
 
 export const memberApi = createApi({
   reducerPath: 'memberApi',
@@ -27,7 +32,6 @@ export const memberApi = createApi({
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/members/${payload.userId}/roles/${payload.roleId}`,
         method: 'PUT',
-        body: payload,
       }),
       invalidatesTags: ['members', 'member'],
     }),
@@ -35,8 +39,16 @@ export const memberApi = createApi({
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/members/${payload.userId}/roles/${payload.roleId}`,
         method: 'DELETE',
-        body: payload,
       }),
+      invalidatesTags: ['members', 'member'],
+    }),
+    updateMember: builder.mutation<Member, MutateMemberRequest>({
+      query: (payload) => ({
+        url: `/v1/structures/${payload.structureId}/members/${payload.memberId}`,
+        method: 'PUT',
+        body: payload.data,
+      }),
+      invalidatesTags: ['members', 'member'],
     }),
   }),
 })
@@ -46,4 +58,5 @@ export const {
   useGetMemberQuery,
   useAddMemberRoleMutation,
   useRemoveMemberRoleMutation,
+  useUpdateMemberMutation,
 } = memberApi

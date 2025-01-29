@@ -6,13 +6,40 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/commons/components/ui/breadcrumb.tsx'
-import { Member } from '@/data/models/user.ts'
+import { Member } from '@/data/models/user'
+import { useForm, useFormContext } from 'react-hook-form'
+import {
+  EditMemberPermissionsFormSchema,
+  editMemberPermissionsValidator
+} from '@/apps/platform/validators/user_validator.ts'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/commons/components/ui/form.tsx'
+import { Checkbox } from '@/commons/components/ui/checkbox.tsx'
+import { cn, useCurrentMemberPermissions, usePermissionBitwise, useQueryResult } from '@/commons/utils'
+import { useParams } from 'react-router'
+import { PermissionKey } from '@/data/models/permission.ts'
+import { useUpdateMemberMutation } from '@/data/api/member_api.ts'
+import { Check } from 'lucide-react'
 
 type Props = {
   member: Member
 }
 
-export default function MemberPermissionsView(props: Props) {
+export default function MemberRolesView(props: Props) {
+  const [handlePermissionUpdate, result] = useUpdateMemberMutation()
+
+  const form = useForm<EditMemberPermissionsFormSchema>({
+    resolver: zodResolver(editMemberPermissionsValidator),
+    values: {
+      permissions: props.member.permissions ?? 0
+    }
+  })
+
+  useQueryResult(result, {
+    onSuccess: 'Le membre a été mis à jour',
+    onError: 'Une erreur est survenue lors de la mise à jour du membre'
+  })
+
   return (
     <Fragment>
       <header
@@ -27,20 +54,106 @@ export default function MemberPermissionsView(props: Props) {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block"/>
               <BreadcrumbItem>
-                <BreadcrumbPage>Permissions</BreadcrumbPage>
+                <BreadcrumbPage>Roles</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-        {Array.from({length: 10}).map((_, i) => (
-          <div
-            key={i}
-            className="aspect-video max-w-3xl rounded-xl bg-muted/50"
+        <Form {...form}>
+          <MemberPermissionForm
+            onChange={(permissions) => handlePermissionUpdate({
+              structureId: props.member.structure.id,
+              memberId: props.member.id,
+              data: { permissions }
+            })}
           />
-        ))}
+        </Form>
       </div>
     </Fragment>
+  )
+}
+
+type FormProps = {
+  onChange: (permissions: number) => void
+}
+
+function MemberPermissionForm(props: FormProps) {
+  const params = useParams()
+  const form = useFormContext<EditMemberPermissionsFormSchema>()
+
+  const {can} = useCurrentMemberPermissions(params.structureId)
+  const opacity = cn(!can('MANAGE_ROLES') && 'opacity-50')
+
+  const {has, add, remove, structures} = usePermissionBitwise()
+
+  return (
+    <form id="update-user-form">
+      <div className="pt-5 flex flex-col gap-5">
+        <div className="flex gap-5 w-full">
+          <FormField
+            control={form.control}
+            name="permissions"
+            render={({field}) => (
+              <FormItem className="flex-1">
+                {Object.entries(structures).map(([key, permission]) => {
+                  return (
+                    <FormControl>
+                      <FormItem
+                        key={key}
+                        className={cn(
+                          'flex flex-row items-center space-x-3 space-y-0 rounded-md border border-slate-200 p-2',
+                          has(field.value, key as PermissionKey) && 'border-blue-400 bg-blue-50'
+                        )}
+                      >
+                        <FormLabel
+                          htmlFor={key}
+                          className={cn(opacity, 'flex items-center justify-between gap-2 w-full cursor-pointer')}
+                        >
+                          <div className="flex items-center">
+                            <div
+                              className={cn(
+                                'size-8 rounded flex items-center justify-center',
+                                has(field.value, key as PermissionKey) ? 'bg-blue-200' : 'bg-accent'
+                              )}
+                            >
+                              <p className="text-foreground uppercase">{permission.label.charAt(0)}</p>
+                            </div>
+                            <Checkbox
+                              id={key}
+                              className="hidden"
+                              name={field.name}
+                              checked={has(field.value, key as PermissionKey)}
+                              onCheckedChange={(value) => {
+                                const newValue = !value
+                                  ? remove(field.value, key as PermissionKey)
+                                  : add(field.value, key as PermissionKey)
+
+                                field.onChange(newValue)
+                                props.onChange(newValue)
+                              }}
+                            />
+                            <div>
+                              <p className="text-sm">{permission.label}</p>
+                              <p className="text-xs">{permission.description}</p>
+                            </div>
+                          </div>
+                          {has(field.value, key as PermissionKey) && (
+                            <div className="flex items-center">
+                              <Check className="size-4 text-blue-600"/>
+                            </div>
+                          )}
+                        </FormLabel>
+                      </FormItem>
+                    </FormControl>
+                  )
+                })}
+              </FormItem>
+            )}
+          />
+        </div>
+      </div>
+    </form>
   )
 }

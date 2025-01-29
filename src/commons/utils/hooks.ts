@@ -132,6 +132,16 @@ export function usePermissionBitwise() {
     internals: {
       INTERNAL_PLATFORM: Permission.INTERNAL_PLATFORM,
       INTERNAL_MANAGER: Permission.INTERNAL_MANAGER
+    },
+    structures: {
+      MANAGE_STRUCTURE: Permission.MANAGE_STRUCTURE,
+      MANAGE_MEMBERS: Permission.MANAGE_MEMBERS,
+      VIEW_MEMBERS: Permission.VIEW_MEMBERS,
+      MANAGE_ROLES: Permission.MANAGE_ROLES,
+      VIEW_LOGS: Permission.VIEW_LOGS,
+      MANAGE_PRACTICES: Permission.MANAGE_PRACTICES,
+      MANAGE_NOTIFICATIONS: Permission.MANAGE_NOTIFICATIONS,
+      VIEW_ROLES: Permission.VIEW_ROLES
     }
   }
 }

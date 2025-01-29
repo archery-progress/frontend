@@ -1,3 +1,4 @@
+import { EditMemberPermissionsFormSchema } from '@/apps/platform/validators/user_validator.ts'
 
 export type GetMembersRequest = {
   structureId?: string
@@ -14,3 +15,10 @@ export type MutateRoleMemberRequest = {
   userId?: string
   roleId?: string
 }
+
+export type MutateMemberRequest = {
+  structureId?: string
+  memberId?: string
+  data: EditMemberPermissionsFormSchema
+}
+

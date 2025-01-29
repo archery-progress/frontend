@@ -15,7 +15,7 @@ export const Permission = {
     description: 'Access to the administrator.',
     value: 1 << 10
   },
-  MANAGE_SETTINGS: {
+  MANAGE_STRUCTURE: {
     label: 'Manage Settings',
     description: 'Access to the settings management.',
     value: 1 << 11
@@ -50,6 +50,11 @@ export const Permission = {
     description: 'Access to the notifications management.',
     value: 1 << 17
   },
+  VIEW_ROLES: {
+    label: 'View Roles',
+    description: 'Access to the roles view.',
+    value: 1 << 18
+  }
 } as const
 
 export type PermissionValue = {
