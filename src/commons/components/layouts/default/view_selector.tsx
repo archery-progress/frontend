@@ -26,7 +26,7 @@ export default function ViewSelector(props: Props) {
   const navigate = useNavigate()
 
   const manageableStructures = props.user.members.filter((member) => {
-    const permissions: PermissionKey[] = ['ADMINISTRATOR', 'MANAGE_ROLES', 'MANAGE_MEMBERS', 'MANAGE_NOTIFICATIONS', 'MANAGE_PRACTICES', 'MANAGE_SETTINGS', 'VIEW_MEMBERS', 'VIEW_LOGS']
+    const permissions: PermissionKey[] = ['ADMINISTRATOR', 'MANAGE_ROLES', 'MANAGE_MEMBERS', 'MANAGE_NOTIFICATIONS', 'MANAGE_PRACTICES', 'MANAGE_STRUCTURE', 'VIEW_MEMBERS', 'VIEW_LOGS']
     return hasOne(member.permissions, permissions)
   })
 
@@ -62,7 +62,7 @@ export default function ViewSelector(props: Props) {
             >
               <div
                 className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <img src={props.user.avatar} className="size-8 rounded" alt={props.user.firstname}/>
+                <img src={props.user.avatar ?? 'https://placehold.co/32'} className="size-8 rounded" alt={props.user.firstname}/>
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">

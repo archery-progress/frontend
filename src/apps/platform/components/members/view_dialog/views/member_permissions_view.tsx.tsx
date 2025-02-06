@@ -101,7 +101,7 @@ function MemberPermissionForm(props: FormProps) {
               <FormItem className="flex-1">
                 {Object.entries(structures).map(([key, permission]) => {
                   return (
-                    <FormControl>
+                    <FormControl key={key}>
                       <FormItem
                         key={key}
                         className={cn(
