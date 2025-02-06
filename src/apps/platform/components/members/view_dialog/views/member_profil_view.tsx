@@ -46,7 +46,7 @@ export default function MemberProfilView(props: Props) {
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
         <div className="flex gap-5">
           <div className="aspect-video size-32 rounded-md overflow-hidden">
-            <img src={props.member.user.avatar} alt=""/>
+            <img src={props.member.user.avatar ?? 'https://placehold.co/1200'} alt=""/>
           </div>
           <div className="flex flex-1 flex-col gap-4 w-full">
             <div className="grid w-full max-w-sm items-center gap-1.5">

@@ -77,17 +77,23 @@ export default function MemberRolesView(props: Props) {
           <AsyncData<Paginated<Role>>
             source={rolesQuery}
             onData={(roles) => (
-              <MemberRoleForm
-                roles={roles.data}
-                onRoleAdd={(id: string) => handleAddQuery({
-                  ...baseQueryUri,
-                  roleId: id
-                })}
-                onRoleRemove={(id: string) => handleRemoveQuery({
-                  ...baseQueryUri,
-                  roleId: id
-                })}
-              />
+             <Fragment>
+               {roles.data.length ? (
+                 <MemberRoleForm
+                   roles={roles.data}
+                   onRoleAdd={(id: string) => handleAddQuery({
+                     ...baseQueryUri,
+                     roleId: id
+                   })}
+                   onRoleRemove={(id: string) => handleRemoveQuery({
+                     ...baseQueryUri,
+                     roleId: id
+                   })}
+                 />
+               ) : (
+                 <p>Aucun rôle n'a été trouvé</p>
+               )}
+             </Fragment>
             )}
           />
         </Form>

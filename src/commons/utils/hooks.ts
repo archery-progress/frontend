@@ -105,6 +105,7 @@ export function usePermissionBitwise() {
   }
 
   function has(value: number, permission: PermissionKey): boolean {
+    if (!Permission[permission]) return false
     return (value & Permission[permission].value) === Permission[permission].value
   }
 
