@@ -4,7 +4,7 @@ import { Paginated } from '@/commons/utils'
 import { Member, User } from '@/data/models/user.ts'
 import {
   GetSessionRequest,
-  GetSessionsRequest,
+  GetSessionsRequest, MutateSessionParticipantRequest,
   MutateSessionRequest,
   StoreSessionRequest
 } from '@/data/contracts/session.ts'
@@ -18,32 +18,46 @@ export const sessionApi = createApi({
       providesTags: ['sessions'],
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/sessions?${payload.queryParams}`,
-        method: 'GET',
+        method: 'GET'
       })
     }),
     getSession: builder.query<User, GetSessionRequest>({
       providesTags: ['session'],
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/sessions/${payload.sessionId}`,
-        method: 'GET',
+        method: 'GET'
       })
     }),
     storeSession: builder.mutation<Member, StoreSessionRequest>({
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/sessions`,
-        method: 'POST',
+        method: 'POST'
       }),
-      invalidatesTags: ['sessions'],
+      invalidatesTags: ['sessions']
     }),
     updateSession: builder.mutation<Member, MutateSessionRequest>({
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/sessions/${payload.sessionId}`,
         method: 'PUT',
-        body: payload.data,
+        body: payload.data
       }),
-      invalidatesTags: ['sessions', 'session'],
+      invalidatesTags: ['sessions', 'session']
     }),
-  }),
+    addParticipant: builder.mutation<Member, MutateSessionParticipantRequest>({
+      query: (payload) => ({
+        url: `/v1/structures/${payload.structureId}/sessions/${payload.sessionId}/participants/${payload.memberId}`,
+        method: 'PUT'
+      }),
+      invalidatesTags: ['sessions', 'session']
+    }),
+    removeParticipant: builder.mutation<Member, MutateSessionParticipantRequest>({
+      query: (payload) => ({
+        url: `/v1/structures/${payload.structureId}/sessions/${payload.sessionId}/participants/${payload.memberId}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['sessions', 'session']
+    })
+  })
 })
 
 export const {
@@ -51,4 +65,6 @@ export const {
   useGetSessionQuery,
   useStoreSessionMutation,
   useUpdateSessionMutation,
+  useAddParticipantMutation,
+  useRemoveParticipantMutation
 } = sessionApi

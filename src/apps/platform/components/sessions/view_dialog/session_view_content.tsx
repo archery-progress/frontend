@@ -11,12 +11,13 @@ import {
   SidebarMenuItem,
   SidebarProvider
 } from '@/commons/components/ui/sidebar.tsx'
-import { Cog, LucideIcon } from 'lucide-react'
+import { Cog, LucideIcon, User2 } from 'lucide-react'
 import { Fragment, ReactElement, useState } from 'react'
 import { AsyncData } from '@/commons/components/async_data.tsx'
 import { Session } from '@/data/models/session.ts'
 import { useGetSessionQuery } from '@/data/api/session_api.ts'
 import SessionView from '@/apps/platform/components/sessions/view_dialog/views/session_view.tsx'
+import SessionParticipantView from '@/apps/platform/components/sessions/view_dialog/views/session_participant_view.tsx'
 
 type Props = {
   structureId?: string
@@ -32,6 +33,7 @@ type TabItem = {
 export default function SessionViewContent(props: Props) {
   const tabs: TabItem[] = [
     {name: 'Configuration', icon: Cog, component: SessionView},
+    {name: 'Participants', icon: User2, component: SessionParticipantView},
   ]
 
   const [currentTab, setCurrentTab] = useState<TabItem>(tabs[0])
@@ -53,7 +55,7 @@ export default function SessionViewContent(props: Props) {
               onData={(session) => (
                 <Fragment>
                   <p className="truncate font-semibold">
-                    {session.targetDatetime}
+                    {session.name}
                   </p>
                 </Fragment>
               )}

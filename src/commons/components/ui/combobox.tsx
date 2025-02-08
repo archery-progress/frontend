@@ -13,21 +13,22 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/commons/components/ui
 import { cn } from '@/commons/utils'
 import { useState } from 'react'
 
-type Props = {
-  items: { label: string; value: string }[]
+type Props<T> = {
+  items: { label: string; value: T }[]
+  clearOnSelect?: boolean
   placeholder?: string
   notFoundPlaceholder?: string
   searchPlaceholder?: string
-  defaultValue?: string | number
+  defaultValue?: T
   expanded?: boolean
   multiple?: boolean
   searchable?: boolean
-  onChange?: (value: string | number) => void
+  onChange?: (value: T) => void
 }
 
-export function Combobox(props: Props) {
+export function Combobox<T>(props: Props<T>) {
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState<string | number | undefined>(props.defaultValue)
+  const [value, setValue] = useState<T | undefined>(props.defaultValue)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -53,24 +54,30 @@ export function Combobox(props: Props) {
           )}
           <CommandList>
             <CommandEmpty>{props.notFoundPlaceholder ?? `No element found.`}</CommandEmpty>
-            <CommandGroup>
-              {props.items.map((element) => (
-                <CommandItem
-                  key={element.value}
-                  value={element.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue)
-                    props.onChange?.(currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  {element.label}
-                  <Check
-                    className={cn('ml-auto', value === element.value ? 'opacity-100' : 'opacity-0')}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            {props.items.length ? (
+              <CommandGroup>
+                {props.items.map((element) => (
+                  <CommandItem
+                    key={element.value as string | number}
+                    value={element.value as string}
+                    onSelect={(currentValue) => {
+                      setValue((currentValue === value ? '' : currentValue) as T)
+                      props.onChange?.(currentValue as T)
+                      setOpen(false)
+
+                      if (props.clearOnSelect) {
+                        setValue('' as T)
+                      }
+                    }}
+                  >
+                    {element.label}
+                    <Check
+                      className={cn('ml-auto', value === element.value ? 'opacity-100' : 'opacity-0')}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            ) : null}
           </CommandList>
         </Command>
       </PopoverContent>

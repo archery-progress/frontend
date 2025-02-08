@@ -14,7 +14,7 @@ export const memberApi = createApi({
   baseQuery,
   tagTypes: ['members', 'member'],
   endpoints: (builder) => ({
-    PaginateMembers: builder.query<Paginated<Member>, GetMembersRequest>({
+    paginateMembers: builder.query<Paginated<Member>, GetMembersRequest>({
       providesTags: ['members'],
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/members?${payload.queryParams}`,

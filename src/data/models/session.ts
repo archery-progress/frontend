@@ -1,3 +1,5 @@
+import { MemberSession } from '@/data/models/user.ts'
+
 export type Session = {
   id: string
   memberId: string
@@ -5,6 +7,7 @@ export type Session = {
   name: string | null
   description: string | null
   targetDatetime: string
+  participants: MemberSession[]
   createdAt: string
   updatedAt: string
 }
