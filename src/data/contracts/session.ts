@@ -19,3 +19,8 @@ export type MutateSessionRequest = {
   data: unknown
 }
 
+export type MutateSessionParticipantRequest = {
+  structureId?: string
+  sessionId?: string
+  memberId: unknown
+}

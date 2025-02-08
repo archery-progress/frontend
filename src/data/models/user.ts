@@ -30,3 +30,11 @@ export type Member = {
   createdAt: string
   updatedAt: string | null
 }
+
+export type MemberSession = {
+  id: string
+  memberId: string
+  member: Member
+  createdAt: string
+  updatedAt: string | null
+}
