@@ -1,6 +1,6 @@
-import { ApplicationLayout } from '@/commons/components/layouts/default/layout.tsx'
+import { ApplicationLayout } from "@/commons/components/layouts/default/layout";
 
-export function ArcheryDashboard() {
+export default function PageDashboardFeature() {
   return (
     <ApplicationLayout
       mode="archery"

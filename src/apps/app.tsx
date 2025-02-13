@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router";
-import { ArcheryDashboard } from "./archery/pages/archery_dashboard";
 import AuthenticatedLayout from "@/commons/components/layouts/authenticated_layout";
 import { PlatformDashboard } from "./platform/pages/platform_dashboard";
 import { MembersOverview } from "./platform/pages/members/members_overview";
@@ -10,6 +9,7 @@ import { AppDispatch } from "@/data/store/store";
 import { getUserState, userActions, userSlice } from "@/data/store/user_store";
 import { Skeleton } from "@/commons/components/ui/skeleton";
 import PageAuth from "./pages/authentication/page-auth";
+import PageArchery from "./pages/archery/page-archery";
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -57,9 +57,10 @@ export default function App() {
     <div>
        <Routes>
           <Route path="authentication/*" element={<PageAuth />} />
-          <Route path="archery" element={<AuthenticatedLayout />}>
-            <Route path="dashboard" element={<ArcheryDashboard/>}/>
+          <Route element={<AuthenticatedLayout />}>
+            <Route path="archery/*" element={<PageArchery />} />  
           </Route>
+          
           <Route path="structures/:structureId" element={<AuthenticatedLayout />}>
             <Route path="overview" element={<PlatformDashboard/>}/>
             <Route path="members/overview" element={<MembersOverview/>} />
