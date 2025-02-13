@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger
 } from '@/commons/components/ui/dropdown-menu.tsx'
 import { PermissionKey } from '@/data/models/permission.ts'
+import { useSelector } from 'react-redux'
+import { getStructureState } from '@/data/store/structure_store'
 
 type Props = {
   currentView: string
@@ -20,13 +22,18 @@ type Props = {
 
 export default function ViewSelector(props: Props) {
   const {pathname} = useLocation()
+  const navigate = useNavigate()
   const {hasOne} = usePermissionBitwise()
   const isMobile = useIsMobile()
-
-  const navigate = useNavigate()
+  const { structures } = useSelector(getStructureState)
 
   const manageableStructures = props.user.members.filter((member) => {
-    const permissions: PermissionKey[] = ['ADMINISTRATOR', 'MANAGE_ROLES', 'MANAGE_MEMBERS', 'MANAGE_NOTIFICATIONS', 'MANAGE_PRACTICES', 'MANAGE_SETTINGS', 'VIEW_MEMBERS', 'VIEW_LOGS']
+    const permissions: PermissionKey[] = ['ADMINISTRATOR', 'MANAGE_ROLES', 'MANAGE_MEMBERS', 'MANAGE_NOTIFICATIONS', 'MANAGE_PRACTICES', 'VIEW_MEMBERS', 'VIEW_LOGS']
+
+    const structure = structures!.find((s) => s.id === member.structureId)
+    if (structure && structure.ownerId === member.userId) {
+      return true
+    }
     return hasOne(member.permissions, permissions)
   })
 
@@ -70,11 +77,10 @@ export default function ViewSelector(props: Props) {
                 </span>
                 <span className="truncate text-xs">{currentView?.label}</span>
               </div>
-              {manageableStructures.length > 0 && <ChevronsUpDown className="ml-auto"/>}
+              <ChevronsUpDown className="ml-auto"/>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          {manageableStructures.length > 0 && (
-            <DropdownMenuContent
+          <DropdownMenuContent
               className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
               align="start"
               side={isMobile ? 'bottom' : 'right'}
@@ -103,7 +109,6 @@ export default function ViewSelector(props: Props) {
                 <div className="font-medium text-muted-foreground">Add team</div>
               </DropdownMenuItem>
             </DropdownMenuContent>
-          )}
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
