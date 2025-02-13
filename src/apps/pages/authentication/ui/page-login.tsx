@@ -1,51 +1,19 @@
-import { buttonVariants } from '@/commons/components/ui/button'
-import { cn, toastVariant } from '@/commons/utils'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { LoginFormSchema, loginValidator } from '@/apps/authentication/validators/login_validator'
-import LoginForm from '@/apps/authentication/components/forms/login_form.tsx'
-import { useLoginMutation } from '@/data/api/auth_api.ts'
-import { useEffect } from 'react'
-import { toast } from 'sonner'
-import { useDispatch } from 'react-redux'
-import { userSlice } from '@/data/store/user_store.ts'
-import { useNavigate } from 'react-router'
+import { buttonVariants } from "@/commons/components/ui/button";
+import { cn } from "@/commons/utils";
+import LoginForm from "./login-form";
+import { UseFormReturn } from "react-hook-form";
+import { LoginFormSchema } from "../validators/login_validator";
 
-export default function LoginPage() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
 
-  const [handleLogin, result] = useLoginMutation()
+export interface PageLoginProps {
+  form: UseFormReturn<LoginFormSchema>
+  handleLogin: () => void
+}
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      dispatch(userSlice.actions.setUser(result.data))
-
-      sessionStorage.setItem('token', result.data.token)
-      navigate('/archery/dashboard')
-
-      toast.success('Success', {
-        ...toastVariant.success,
-        description: 'Vous êtes maintenant connecté.',
-      })
-    }
-
-    if (result.isError) {
-      toast.error('Error', {
-        ...toastVariant.error,
-        description: 'Une erreur est survenue lors de la connexion.',
-      })
-    }
-  }, [result])
-
-  const form = useForm<LoginFormSchema>({
-    resolver: zodResolver(loginValidator),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  })
-
+export default function PageLogin({
+  form,
+  handleLogin
+}: PageLoginProps) {
   return (
     <div className="">
       <div className="container relative hidden min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -110,4 +78,6 @@ export default function LoginPage() {
       </div>
     </div>
   )
+
+
 }

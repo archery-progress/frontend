@@ -2,8 +2,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Button } from '@/commons/components/ui/button.tsx'
 import { Input } from '@/commons/components/ui/input.tsx'
 import { ReactNode } from 'react'
-import { LoginFormSchema } from '@/apps/authentication/validators/login_validator.ts'
+
 import { UseFormReturn } from 'react-hook-form'
+import { LoginFormSchema } from '../validators/login_validator'
 
 type Props = {
   form: UseFormReturn<LoginFormSchema>
