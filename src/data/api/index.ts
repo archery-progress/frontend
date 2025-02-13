@@ -14,9 +14,9 @@ export const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryE
   })
 
   const result = await baseQuery(args, api, extraOptions)
-  if (result.error && result.error.status === 401) {
-    window?.location.replace('/authentication/login');
-  }
+  // if (result.error && result.error.status === 401) {
+  //   window?.location.replace('/authentication/login');
+  // }
 
   return result
 }
