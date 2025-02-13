@@ -4,9 +4,11 @@ import { memberApi } from '@/data/api/member_api.ts'
 import { roleApi } from '@/data/api/role_api.ts'
 import { structureApi } from '@/data/api/structure_api.ts'
 import { authApi } from '@/data/api/auth_api.ts'
+import { structureReducer } from './structure_store'
 
 export const rootReducer = combineReducers({
   user: userReducer,
+  structure: structureReducer,
   [authApi.reducerPath]: authApi.reducer,
   [memberApi.reducerPath]: memberApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
