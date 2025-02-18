@@ -12,13 +12,14 @@ import { toast } from 'sonner'
 import { toastVariant } from '@/commons/utils'
 import { useDispatch } from 'react-redux'
 import { userSlice } from '@/data/store/user_store.ts'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { BasicView } from '@/commons/components/layouts/sidebar_views/basic_view.tsx'
 import { GroupView } from '@/commons/components/layouts/sidebar_views/group_view.tsx'
 
 export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) {
   const dispatch = useDispatch()
   const params = useParams()
+  const navigate = useNavigate()
 
   const [logout, result] = useLogoutMutation()
   const userQuery = useGetAuthenticatedUserQuery()
@@ -37,6 +38,8 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
         ...toastVariant.success,
         description: 'User has been created.'
       })
+
+      navigate('/authentication/login')
     }
 
     if (result.isError) toast.error('Error', {
