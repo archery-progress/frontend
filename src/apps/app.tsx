@@ -23,10 +23,6 @@ export default function App() {
 
     if (!data) return
 
-    if (!token) {
-      navigate('/authentication/login')
-    }
-
     dispatch(userSlice.actions.setUser({
       user: data,
       token
@@ -40,11 +36,6 @@ export default function App() {
     }
   }, [isError])
 
-  useEffect(() => {
-    if (!user && !isLoading && !pathname.includes('authentication/login')) {
-      navigate('/authentication/login')
-    }
-  }, [user, isLoading])
 
 
   if (!user && isLoading) {
