@@ -1,7 +1,6 @@
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 
-export const backendUrl =
-  import.meta.env.VITE_PRODUCTION === 'true' ? `https://api.${window.location.hostname}` : import.meta.env.VITE_BACKEND
+export const backendUrl = import.meta.env.VITE_API_URL
 
 export const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
   const baseQuery = fetchBaseQuery({
