@@ -146,7 +146,7 @@ export function usePermissionBitwise() {
   }
 }
 
-export function useCurrentMemberPermissions(structureId?: string) {
+export function useCurrentMemberPermissions(_structureId?: string) {
   const {data: user} = useGetAuthenticatedUserQuery()
   const {deserialize} = usePermissionBitwise()
 

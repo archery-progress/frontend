@@ -2,7 +2,7 @@ import { Button } from '@/commons/components/ui/button.tsx'
 
 export default function LoginForm() {
   return (
-    <div className="lg:p-8">
+    <div className="p-8 min-h-screen flex items-center justify-center">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 ">
           <h1 className="text-2xl font-semibold tracking-tight">Connect to Archery</h1>
@@ -19,7 +19,7 @@ export default function LoginForm() {
           
 
           <Button variant="outline" className="w-full">
-            <a href="http://localhost:3333/v1/authentication/google/redirect">
+            <a href={`${import.meta.env.VITE_API_URL}/v1/authentication/google/redirect`}>
               <div className='flex items-center'>
 
                 <svg
