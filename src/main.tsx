@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { setupStore } from './data/store/store'
 import '@/commons/assets/css/app.css'
 
-import App from './apps/app'
+import App from './app'
 
 const container = document.getElementById('root') || document.createElement('div') as HTMLElement
 const root = createRoot(container)

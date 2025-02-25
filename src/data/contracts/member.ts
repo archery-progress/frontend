@@ -1,4 +1,4 @@
-import { EditMemberPermissionsFormSchema } from '@/apps/platform/validators/user_validator.ts'
+import { EditMemberPermissionsFormSchema } from '@/apps/platform/validators/member_validator.ts'
 
 export type GetMembersRequest = {
   structureId?: string
