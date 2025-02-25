@@ -1,6 +1,6 @@
 import { ChevronsUpDown, PlusIcon } from 'lucide-react'
 import { useIsMobile, usePermissionBitwise } from '@/commons/utils'
-import { useLocation, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { User } from '@/data/models/user.ts'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/commons/components/ui/sidebar.tsx'
 import {
@@ -25,7 +25,7 @@ export default function ViewSelector(props: Props) {
   const navigate = useNavigate()
   const {hasOne} = usePermissionBitwise()
   const isMobile = useIsMobile()
-  const { structures } = useSelector(getStructureState)
+  const {structures} = useSelector(getStructureState)
 
   const manageableStructures = props.user.members.filter((member) => {
     const permissions: PermissionKey[] = ['ADMINISTRATOR', 'MANAGE_ROLES', 'MANAGE_MEMBERS', 'MANAGE_NOTIFICATIONS', 'MANAGE_PRACTICES', 'VIEW_MEMBERS', 'VIEW_LOGS']
@@ -81,34 +81,37 @@ export default function ViewSelector(props: Props) {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-              className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-              align="start"
-              side={isMobile ? 'bottom' : 'right'}
-              sideOffset={4}
-            >
-              <DropdownMenuLabel className="text-xs text-muted-foreground">
-                Vue actuelle
-              </DropdownMenuLabel>
-              {buildViews.map((structure) => (
-                <DropdownMenuItem
-                  key={structure.id}
-                  onClick={() => navigate(structure.href)}
-                  className="flex items-center gap-2 p-2 cursor-pointer"
-                >
-                  <div className="flex size-8 items-center justify-center rounded-sm border">
-                    <img src={structure.logo ?? 'https://placehold.co/32'} className="size-8 object-cover rounded" alt={structure.label}/>
-                  </div>
-                  <div className="flex-1">{structure.label}</div>
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator/>
-              <DropdownMenuItem className="gap-2 p-2">
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            align="start"
+            side={isMobile ? 'bottom' : 'right'}
+            sideOffset={4}
+          >
+            <DropdownMenuLabel className="text-xs text-muted-foreground">
+              Vue actuelle
+            </DropdownMenuLabel>
+            {buildViews.map((structure) => (
+              <DropdownMenuItem
+                key={structure.id}
+                onClick={() => navigate(structure.href)}
+                className="flex items-center gap-2 p-2 cursor-pointer"
+              >
+                <div className="flex size-8 items-center justify-center rounded-sm border">
+                  <img src={structure.logo ?? 'https://placehold.co/32'} className="size-8 object-cover rounded"
+                       alt={structure.label}/>
+                </div>
+                <div className="flex-1">{structure.label}</div>
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator/>
+            <DropdownMenuItem className="gap-2 p-2">
+              <Link to="/onboarding/structure" className="flex items-center gap-2 p-2 cursor-pointer">
                 <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                   <PlusIcon className="size-4"/>
                 </div>
                 <div className="font-medium text-muted-foreground">Add team</div>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>

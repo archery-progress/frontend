@@ -8,7 +8,6 @@ import {
 } from '@/commons/components/ui/breadcrumb.tsx'
 import { Member } from '@/data/models/user'
 import { useFormContext } from 'react-hook-form'
-import { EditMemberPermissionsFormSchema } from '@/apps/platform/validators/member_validator.ts'
 import { FormControl, FormField, FormItem, FormLabel } from '@/commons/components/ui/form.tsx'
 import { Checkbox } from '@/commons/components/ui/checkbox.tsx'
 import { cn, useCurrentMemberPermissions, usePermissionBitwise } from '@/commons/utils'
@@ -16,6 +15,7 @@ import { useParams } from 'react-router'
 import { PermissionKey } from '@/data/models/permission.ts'
 import { Check } from 'lucide-react'
 import { MutateMemberRequest } from '@/data/contracts/member.ts'
+import { EditMemberPermissionsFormSchema } from '@/pages/member/member_validator.ts'
 
 type Props = {
   member: Member
