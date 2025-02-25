@@ -1,7 +1,7 @@
 export const Permission = {
   INTERNAL_PLATFORM: {
     label: 'Internal Platform',
-    description: 'Access to the internal platform.',
+    description: 'Access to the internal member.',
     value: 1 << 0
   },
   INTERNAL_MANAGER: {
