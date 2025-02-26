@@ -1,4 +1,5 @@
 import { type ChangeEventHandler, type ReactNode, forwardRef, useEffect, useRef, useState } from 'react'
+import { cn } from '@/commons/utils'
 
 export interface InputTextProps {
   name: string
@@ -32,7 +33,7 @@ export const InputText = forwardRef<HTMLInputElement, InputTextProps>(function I
   const [focused, setFocused] = useState(false)
   const inputRef = useRef<HTMLDivElement>(null)
   const [currentValue, setCurrentValue] = useState(value)
-  const [currentType, setCurrentType] = useState(type)
+  const [currentType] = useState(type)
 
   useEffect(() => {
     setCurrentValue(value)
@@ -57,7 +58,7 @@ export const InputText = forwardRef<HTMLInputElement, InputTextProps>(function I
 
   return (
     <div
-      className={className}
+      className={cn('w-full', className)}
       onClick={() => (isInputDate ? displayPicker() : inputRef.current?.querySelector('input')?.focus())}
       data-testid={`${dataTestId || 'input-text'}-wrapper`}
     >

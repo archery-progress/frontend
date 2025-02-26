@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 export const Step = {
   identity: 'structure',
   members: 'members',
+  plans: 'plans',
 } as const
 
 export default function ProgressStep() {
@@ -10,7 +11,8 @@ export default function ProgressStep() {
 
   const progress: {[key: string]: string} = {
     [Step.identity] : '33%',
-    [Step.members] : '66%',
+    [Step.members] : '50%',
+    [Step.plans] : '66%',
   }
 
   const currentStep = progress[(params.step as string)]

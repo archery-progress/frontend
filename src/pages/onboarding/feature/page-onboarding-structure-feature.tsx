@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router'
 import { Step } from '@/pages/onboarding/components/progress-step.tsx'
 import PageOnboardingMembers from '@/pages/onboarding/ui/page-onboarding-members.tsx'
 import { useEffect } from 'react'
+import PageOnboardingPlans from '@/pages/onboarding/ui/page-onboarding-plans.tsx'
 
 export default function PageOnboardingStructureFeature() {
   const navigate = useNavigate()
@@ -31,6 +32,7 @@ export default function PageOnboardingStructureFeature() {
     <Form {...form}>
       {params.step == Step.identity && <PageOnboardingStructure />}
       {params.step == Step.members && <PageOnboardingMembers />}
+      {params.step == Step.plans && <PageOnboardingPlans />}
     </Form>
   )
 }

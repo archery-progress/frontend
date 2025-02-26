@@ -10,10 +10,18 @@ import { CreateStructureFormSchema } from '@/pages/onboarding/validators.ts'
 
 export default function PageOnboardingMembers() {
   return (
-    <div>
-      <Heading>Invitez des membres</Heading>
-      <p className="text-muted-foreground">Page d'invitation des membres</p>
-      <OnboardingForm/>
+    <div className="flex w-full">
+      <div className="flex-1">
+        <div className="max-w-xl mx-auto py-16">
+          <Heading>Invitez des membres</Heading>
+          <p className="text-muted-foreground">Page d'invitation des membres</p>
+          <OnboardingForm/>
+        </div>
+      </div>
+
+      <div className="w-1/3 bg-slate-100">
+        dd
+      </div>
     </div>
   )
 }
@@ -29,7 +37,7 @@ export function OnboardingForm() {
 
   function onNextStep(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    navigate(`/onboarding/${Step.members}`)
+    navigate(`/onboarding/${Step.plans}`)
   }
 
   const elements = [
