@@ -52,14 +52,6 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
   return (
     <Sidebar variant="inset" {...rest}>
       <SidebarHeader className="px-2 pt-4">
-        {/* <AsyncData<User>
-          source={userQuery}
-          onLoading={<p>Loading...</p>}
-          onData={(user) => (
-            <ViewSelector currentView={mode} user={user} />
-          )}
-        /> */}
-
         <ViewSelector currentView={mode} user={user!} />
       </SidebarHeader>
       <SidebarContent className="py-5 gap-0">

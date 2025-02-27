@@ -25,7 +25,7 @@ export default function ViewSelector(props: Props) {
   const navigate = useNavigate()
   const {hasOne} = usePermissionBitwise()
   const isMobile = useIsMobile()
-  const {structures} = useSelector(getStructureState)
+  const { structures } = useSelector(getStructureState)
 
   const manageableStructures = props.user.members.filter((member) => {
     const permissions: PermissionKey[] = ['ADMINISTRATOR', 'MANAGE_ROLES', 'MANAGE_MEMBERS', 'MANAGE_NOTIFICATIONS', 'MANAGE_PRACTICES', 'VIEW_MEMBERS', 'VIEW_LOGS']
@@ -102,15 +102,19 @@ export default function ViewSelector(props: Props) {
                 <div className="flex-1">{structure.label}</div>
               </DropdownMenuItem>
             ))}
-            <DropdownMenuSeparator/>
-            <DropdownMenuItem className="gap-2 p-2">
-              <Link to="/onboarding/structure" className="flex items-center gap-2 p-2 cursor-pointer">
-                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                  <PlusIcon className="size-4"/>
-                </div>
-                <div className="font-medium text-muted-foreground">Add team</div>
-              </Link>
-            </DropdownMenuItem>
+            {structures && structures.length < 5 && (
+              <>
+                <DropdownMenuSeparator/>
+                  <DropdownMenuItem className="gap-2 p-2">
+                    <Link to="/onboarding/structure" className="flex items-center gap-2 p-2 cursor-pointer">
+                      <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                        <PlusIcon className="size-4"/>
+                    </div>
+                    <div className="font-medium text-muted-foreground">Add team</div>
+                  </Link>
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
