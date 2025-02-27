@@ -5,9 +5,6 @@ import { LogOutIcon, User2Icon } from 'lucide-react'
 import ViewSelector from '@/commons/components/layouts/default/view_selector'
 import { LayoutProps } from '@/commons/components/layouts/default/layout'
 import { platformSettingLinks, sidebarLinks } from '@/commons/components/layouts/default/settings.ts'
-import { useGetAuthenticatedUserQuery, useLogoutMutation } from '@/data/api/auth_api.ts'
-import { AsyncData } from '@/commons/components/async_data.tsx'
-import { User } from '@/data/models/user.ts'
 import { toast } from 'sonner'
 import { toastVariant } from '@/commons/utils'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +12,7 @@ import { getUserState, userSlice } from '@/data/store/user_store.ts'
 import { useNavigate, useParams } from 'react-router'
 import { BasicView } from '@/commons/components/layouts/sidebar_views/basic_view.tsx'
 import { GroupView } from '@/commons/components/layouts/sidebar_views/group_view.tsx'
+import { useLogoutMutation } from '@/data/api/auth_api'
 
 export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) {
   const dispatch = useDispatch()
@@ -22,7 +20,6 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
   const navigate = useNavigate()
 
   const [logout, result] = useLogoutMutation()
-  const userQuery = useGetAuthenticatedUserQuery()
   const { user } = useSelector(getUserState)
 
   const {mode, ...rest} = props

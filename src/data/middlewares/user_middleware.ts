@@ -8,7 +8,7 @@ export const userListenerMiddleware = createListenerMiddleware()
 
 userListenerMiddleware.startListening({
   matcher: onboardingApi.endpoints.createStructure.matchFulfilled,
-  effect: async (action, listenerApi) => {
+  effect: async (_, listenerApi) => {
     const result = await listenerApi.dispatch(
       authApi.endpoints.getAuthenticatedUser.initiate(undefined, { forceRefetch: true })
     ).unwrap()
