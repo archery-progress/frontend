@@ -25,6 +25,10 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
   const {mode, ...rest} = props
   const currentLinks = sidebarLinks(params.structureId)[mode]
 
+  const handleProfile = () => {
+    navigate('/profil/general')
+  }
+
   useEffect(() => {
     if (result.isSuccess) {
       dispatch(userSlice.actions.logout())
@@ -64,7 +68,7 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
       <SidebarRail/>
       <SidebarFooter>
         {mode === 'archery' && (
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleProfile}>
             <User2Icon className="mr-2"/>
             Mon compte
           </Button>
