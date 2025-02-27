@@ -1,4 +1,4 @@
-import { Button } from '@/commons/components/ui/button.tsx'
+import { Button } from '@/commons/components/ui/button'
 import { MouseEvent } from 'react'
 
 type Props = {
@@ -11,9 +11,9 @@ export default function NextButton(props: Props) {
   return (
     <Button
       onClick={props.onClick}
-      variant="default"
+      //variant="default"
       disabled={props.disabled}
-      size="sm"
+      size="lg"
     >
       {props.label ?? 'Suivant'}
     </Button>

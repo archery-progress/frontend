@@ -1,5 +1,5 @@
 import { ArrowLeft } from 'lucide-react'
-import { Button } from '@/commons/components/ui/button.tsx'
+import { Button } from '@/commons/components/ui/button'
 import { useNavigate } from 'react-router'
 import { MouseEvent } from 'react'
 
@@ -14,11 +14,14 @@ export default function BackButton() {
   return (
     <Button
       onClick={back}
-      variant="secondary"
-      size="sm"
+      color="neutral"
+      variant="surface"
+      size="lg"
     >
-      <ArrowLeft className="w-6 h-6"/>
-      Retour
+      <div className="flex items-center gap-2">
+        <ArrowLeft className="w-4 h-4"/>
+        <span>Retour</span>
+      </div>
     </Button>
   )
 }
