@@ -6,6 +6,7 @@ import { structureApi } from '@/data/api/structure_api.ts'
 import { authApi } from '@/data/api/auth_api.ts'
 import { structureReducer } from './structure_store'
 import { onboardingApi } from '@/data/api/onboarding_api.ts'
+import { userListenerMiddleware } from '../middlewares/user_middleware'
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -27,7 +28,8 @@ export function setupStore(preloadedState?: never) {
         .concat(memberApi.middleware)
         .concat(roleApi.middleware)
         .concat(structureApi.middleware)
-        .concat(onboardingApi.middleware),
+        .concat(onboardingApi.middleware)
+        .prepend(userListenerMiddleware.middleware),
   })
 
 }
