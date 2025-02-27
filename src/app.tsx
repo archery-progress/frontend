@@ -11,6 +11,7 @@ import ArcheryRouter from './pages/archery/archery-router.tsx'
 import MemberRouter from '@/pages/member/member-router.tsx'
 import { PagePlatformDashboardFeature } from '@/pages/platform/feature/page-platform_dashboard-feature.tsx'
 import OnboardingRouter from '@/pages/onboarding/onboarding-router.tsx'
+import ProfilRouter from '@/pages/profil/profil-router.tsx'
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -41,6 +42,7 @@ export default function App() {
       <Route element={<AuthenticatedLayout/>}>
         <Route path="archery/*" element={<ArcheryRouter/>}/>
         <Route path="onboarding/*" element={<OnboardingRouter />}/>
+        <Route path="profil/*" element={<ProfilRouter />}/>
       </Route>
 
       <Route path="structures/:structureId" element={<AuthenticatedLayout/>}>
