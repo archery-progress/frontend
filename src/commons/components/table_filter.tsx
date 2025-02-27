@@ -1,6 +1,6 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/commons/components/ui/popover'
 import { FilterIcon } from 'lucide-react'
-import { Button } from '@/commons/components/ui/button'
+import { Button } from '@/commons/components/ui/button-old'
 import { useChangeItemPerPage, useChangeParameter } from '@/commons/utils'
 import { Combobox } from '@/commons/components/ui/combobox'
 import { Label } from '@/commons/components/ui/label'

@@ -1,6 +1,6 @@
 import { ComponentProps, Fragment, useEffect } from 'react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/commons/components/ui/sidebar'
-import { Button } from '@/commons/components/ui/button'
+import { Button } from '@/commons/components/ui/button-old'
 import { LogOutIcon, User2Icon } from 'lucide-react'
 import ViewSelector from '@/commons/components/layouts/default/view_selector'
 import { LayoutProps } from '@/commons/components/layouts/default/layout'
@@ -10,8 +10,8 @@ import { AsyncData } from '@/commons/components/async_data.tsx'
 import { User } from '@/data/models/user.ts'
 import { toast } from 'sonner'
 import { toastVariant } from '@/commons/utils'
-import { useDispatch } from 'react-redux'
-import { userSlice } from '@/data/store/user_store.ts'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserState, userSlice } from '@/data/store/user_store.ts'
 import { useNavigate, useParams } from 'react-router'
 import { BasicView } from '@/commons/components/layouts/sidebar_views/basic_view.tsx'
 import { GroupView } from '@/commons/components/layouts/sidebar_views/group_view.tsx'
@@ -23,6 +23,7 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
 
   const [logout, result] = useLogoutMutation()
   const userQuery = useGetAuthenticatedUserQuery()
+  const { user } = useSelector(getUserState)
 
   const {mode, ...rest} = props
   const currentLinks = sidebarLinks(params.structureId)[mode]
@@ -51,13 +52,15 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
   return (
     <Sidebar variant="inset" {...rest}>
       <SidebarHeader className="px-2 pt-4">
-        <AsyncData<User>
+        {/* <AsyncData<User>
           source={userQuery}
           onLoading={<p>Loading...</p>}
           onData={(user) => (
             <ViewSelector currentView={mode} user={user} />
           )}
-        />
+        /> */}
+
+        <ViewSelector currentView={mode} user={user!} />
       </SidebarHeader>
       <SidebarContent className="py-5 gap-0">
         {mode === 'platform' && (
