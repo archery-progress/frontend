@@ -14,6 +14,13 @@ export const structureSlice = createSlice({
   reducers: {
     setStructures: (state, action) => {
       state.structures = action.payload
+    },
+    addStructure: (state, action) => {
+      if (state.structures) {
+        state.structures = [...state.structures, action.payload]
+      } else {
+        state.structures = [action.payload]
+      }
     }
   }
 })

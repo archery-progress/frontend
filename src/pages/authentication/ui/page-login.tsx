@@ -1,4 +1,4 @@
-import { Button } from '@/commons/components/ui/button.tsx'
+import { Button } from '@/commons/components/ui/button-old'
 
 export default function PageLogin() {
   return (
