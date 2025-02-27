@@ -3,9 +3,12 @@ import ProgressStep from '@/pages/onboarding/components/progress-step.tsx'
 
 export default function Container() {
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex max-h-screen flex-col h-full overflow-hidden">
       <ProgressStep/>
-      <Outlet/>
+      
+      <div className="min-h-screen">
+        <Outlet/>
+      </div>
     </div>
   )
 }

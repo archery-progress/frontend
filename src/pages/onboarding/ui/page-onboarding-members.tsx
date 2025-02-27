@@ -18,10 +18,6 @@ export default function PageOnboardingMembers() {
           <OnboardingForm/>
         </div>
       </div>
-
-      <div className="w-1/3 bg-slate-100">
-        dd
-      </div>
     </div>
   )
 }
@@ -29,53 +25,41 @@ export default function PageOnboardingMembers() {
 
 export function OnboardingForm() {
   const navigate = useNavigate()
-  const form = useFormContext<CreateStructureFormSchema>()
-
-  function addMember(value: string) {
-    form.setValue('members', [...form.getValues('members')!, value])
-  }
 
   function onNextStep(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     navigate(`/onboarding/${Step.plans}`)
   }
 
-  const elements = [
-    {label: 'John Doe', value: 'john.doe.example.foo'},
-    {label: 'Jane Doe', value: 'jane.doe.example.foo'}
-  ]
-
-  const currentMembers = form.watch('members')
-  const members = elements.filter((element) => !currentMembers!.includes(element.value))
-
   return (
     <div className="pt-5 flex flex-col gap-5">
-      <div className="flex gap-5 w-full">
-        <InputSearchMember
-          onSelect={addMember}
-          elements={members}
-        />
+      <div className="flex flex-col items-center justify-center p-10 border border-dashed border-gray-300 rounded-lg bg-gray-50">
+        <div className="bg-primary/10 p-3 rounded-full mb-4">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-8 w-8 text-primary" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M12 15v2m0 0v2m0-2h2m-2 0H9m3-3a3 3 0 100-6 3 3 0 000 6z" 
+            />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold mb-2">Invitation des membres</h3>
+        <p className="text-muted-foreground text-center mb-4">
+          Cette fonctionnalité sera bientôt disponible. Vous pourrez inviter des membres à rejoindre votre structure.
+        </p>
+        <div className="bg-primary/5 text-primary font-medium py-1 px-3 rounded-full text-sm">
+          Prochainement
+        </div>
       </div>
 
-      <div>
-        {currentMembers?.map((member) => (
-          <div key={member} className="flex gap-5 w-full">
-            <div className="flex items-center gap-2">
-              <span>{member}</span>
-              <button
-                onClick={() => {
-                  form.setValue('members', currentMembers.filter((currentMember) => currentMember !== member))
-                }}
-                className="text-red-500"
-              >
-                Supprimer
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex justify-between">
+      <div className="flex justify-between border-t pt-4 mt-4">
         <BackButton/>
         <NextButton onClick={onNextStep}/>
       </div>

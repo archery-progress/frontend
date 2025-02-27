@@ -8,11 +8,12 @@ import NextButton from '@/pages/onboarding/components/next-button.tsx'
 import { useNavigate } from 'react-router'
 import { Fragment, MouseEvent } from 'react'
 import { Step } from '@/pages/onboarding/components/progress-step.tsx'
-import InputText from '@/commons/components/ui/input-text.tsx'
+import InputText from '@/commons/components/ui/inputs/input-text'
+import InputTextArea from '@/commons/components/ui/inputs/input-text-area'
 
 export default function PageOnboardingStructure() {
   return (
-    <div className="flex w-full">
+    <div className="flex w-full h-full">
       <div className="flex-1">
         <div className="max-w-xl mx-auto py-16">
           <Heading>Créer une structure ✨</Heading>
@@ -21,8 +22,27 @@ export default function PageOnboardingStructure() {
         </div>
       </div>
 
-      <div className="w-1/3 bg-slate-100">
-        dd
+      <div className="w-1/3 min-h-screen bg-slate-100 flex justify-center pt-12">
+        <div className='flex flex-col gap-5'>
+          <Box />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Box() {
+  return (
+    <div className='w-80 rounded-md border border-neutral-250 bg-white'>
+      <div className="p-8">
+        <span className="text-4xl" role="img" aria-label="light">💡</span>
+        <h2 className="text-lg font-bold text-slate-800 mb-5 mt-5 text-neutral-400">Qu'est-ce qu'une structure?</h2>
+
+        <ul className='list-disc list-inside'>
+          <li className='mb-2 flex gap-3 text-neutral-400 before:mt-2 before:h-1 before:w-1 before:shrink-0 before:rounded-full before:bg-neutral-400 before:content-[" "]'>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+          </li>
+        </ul>
       </div>
     </div>
   )
@@ -59,18 +79,17 @@ export function OnboardingForm() {
             name="description"
             render={({field}) => (
               <Fragment>
-                <Textarea
+                <InputTextArea 
                   {...field}
-                  rows={8}
-                  className="bg-white"
-                  placeholder="Description de la structure"
+                  label="Description de la structure"
+                  className="bg-white w-full"
                 />
                 <FormMessage/>
               </Fragment>
             )}
           />
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between border-t pt-4 mt-4">
           <BackButton/>
           <NextButton
             onClick={onNextStep}

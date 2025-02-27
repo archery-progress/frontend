@@ -8,10 +8,16 @@ import { Step } from '@/pages/onboarding/components/progress-step.tsx'
 import PageOnboardingMembers from '@/pages/onboarding/ui/page-onboarding-members.tsx'
 import { useEffect } from 'react'
 import PageOnboardingPlans from '@/pages/onboarding/ui/page-onboarding-plans.tsx'
+import { useCreateStructureMutation } from '@/data/api/onboarding_api'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/data/store/store'
+import { structureActions } from '@/data/store/structure_store'
 
 export default function PageOnboardingStructureFeature() {
   const navigate = useNavigate()
   const params = useParams()
+  const dispatch = useDispatch<AppDispatch>()
+  const [createStructure, result] = useCreateStructureMutation()
 
   const form = useForm<CreateStructureFormSchema>({
     resolver: zodResolver(createStructureIdentity),
@@ -21,6 +27,17 @@ export default function PageOnboardingStructureFeature() {
       members: []
     }
   })
+
+  const handleSubmit = form.handleSubmit((data) => {
+    createStructure(data)
+  })
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      navigate(`/structures/${result.data.id}/overview`)
+      dispatch(structureActions.addStructure(result.data))
+    }
+  }, [result])
 
   useEffect(() => {
     if (params.step !== Step.identity) {
@@ -32,7 +49,7 @@ export default function PageOnboardingStructureFeature() {
     <Form {...form}>
       {params.step == Step.identity && <PageOnboardingStructure />}
       {params.step == Step.members && <PageOnboardingMembers />}
-      {params.step == Step.plans && <PageOnboardingPlans />}
+      {params.step == Step.plans && <PageOnboardingPlans onClick={handleSubmit} />}
     </Form>
   )
 }
