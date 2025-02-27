@@ -52,7 +52,9 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
   return (
     <Sidebar variant="inset" {...rest}>
       <SidebarHeader className="px-2 pt-4">
-        <ViewSelector currentView={mode} user={user!} />
+        {user && (
+          <ViewSelector currentView={mode} user={user} />
+        )}
       </SidebarHeader>
       <SidebarContent className="py-5 gap-0">
         {mode === 'platform' && (
