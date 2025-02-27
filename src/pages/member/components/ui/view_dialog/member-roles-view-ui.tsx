@@ -9,7 +9,7 @@ import {
 import { Member } from '@/data/models/user'
 import { Role } from '@/data/models/role'
 import { useFormContext } from 'react-hook-form'
-import { EditMemberRolesFormSchema } from '@/apps/platform/validators/member_validator.ts'
+import { EditMemberRolesFormSchema } from '@/pages/member/member_validator'
 import { FormControl, FormField, FormItem, FormLabel } from '@/commons/components/ui/form.tsx'
 import { Checkbox } from '@/commons/components/ui/checkbox.tsx'
 import { cn, Paginated, useCurrentMemberPermissions } from '@/commons/utils'
@@ -124,7 +124,7 @@ function MemberRoleForm(props: FormProps) {
                                 field.onChange([...field.value, role.id])
                               } else {
                                 props.onRoleRemove(role.id)
-                                field.onChange(field.value.filter((id) => id !== role.id))
+                                field.onChange(field.value.filter((id: string) => id !== role.id))
                               }
                             }}
                           />

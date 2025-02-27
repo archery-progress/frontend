@@ -4,9 +4,6 @@ import NextButton from '@/pages/onboarding/components/next-button.tsx'
 import { useNavigate } from 'react-router'
 import { MouseEvent } from 'react'
 import { Step } from '@/pages/onboarding/components/progress-step.tsx'
-import InputSearchMember from '@/pages/onboarding/components/input-search-member.tsx'
-import { useFormContext } from 'react-hook-form'
-import { CreateStructureFormSchema } from '@/pages/onboarding/validators.ts'
 
 export default function PageOnboardingMembers() {
   return (
