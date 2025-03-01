@@ -4,13 +4,13 @@ import { Separator } from '@/commons/components/ui/separator'
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/commons/components/ui/breadcrumb'
 import { AppSidebar } from '@/commons/components/layouts/default/app_sidebar'
 import { ViewMode } from '@/commons/components/layouts/default/settings.ts'
+import { useNavigate } from 'react-router'
 
 export type LayoutProps = {
   breadcrumb?: { label: string; url?: string }[]
@@ -19,6 +19,13 @@ export type LayoutProps = {
 }
 
 export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
+
+  const navigate = useNavigate()
+
+  const handleNavigate = (url: string) => {
+    navigate(url)
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar {...props} />
@@ -34,7 +41,7 @@ export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
                     if (index === props.breadcrumb!.length - 1) {
                       return (
                         <BreadcrumbItem key={index}>
-                          <BreadcrumbPage className="font-medium">{item.label}</BreadcrumbPage>
+                          <BreadcrumbPage className="font-medium cursor-pointer">{item.label}</BreadcrumbPage>
                         </BreadcrumbItem>
                       )
                     }
@@ -42,9 +49,12 @@ export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
                     return (
                       <Fragment key={index}>
                         <BreadcrumbItem className="hidden md:block">
-                          <BreadcrumbLink href={item.url} className="font-medium">
+                          <span 
+                            className='font-medium cursor-pointer' 
+                            onClick={() => handleNavigate(item.url!)}
+                          >
                             {item.label}
-                          </BreadcrumbLink>
+                          </span>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator className="hidden md:block"/>
                       </Fragment>
