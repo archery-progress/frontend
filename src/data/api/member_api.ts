@@ -1,12 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from './index'
 import { Paginated } from '@/commons/utils'
-import { Member, User } from '@/data/models/user.ts'
+import { Member } from '@/data/models/user.ts'
 import {
   GetMemberRequest,
   GetMembersRequest,
   MutateMemberRequest,
-  MutateRoleMemberRequest
+  MutateRoleMemberRequest,
 } from '@/data/contracts/member.ts'
 
 export const memberApi = createApi({
@@ -19,14 +19,14 @@ export const memberApi = createApi({
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/members?${payload.queryParams}`,
         method: 'GET',
-      })
+      }),
     }),
-    getMember: builder.query<User, GetMemberRequest>({
+    getMember: builder.query<Member, GetMemberRequest>({
       providesTags: ['member'],
       query: (payload) => ({
         url: `/v1/structures/${payload.structureId}/members/${payload.memberId}`,
         method: 'GET',
-      })
+      }),
     }),
     addMemberRole: builder.mutation<Member, MutateRoleMemberRequest>({
       query: (payload) => ({

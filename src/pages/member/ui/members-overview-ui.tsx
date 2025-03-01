@@ -23,7 +23,7 @@ export default function MembersOverviewUi(props: Props) {
       mode="platform"
       breadcrumb={[
         {label: 'Accueil', url: `/structures/${props.params.structureId}/overview`},
-        {label: 'Licenciés', url: `/structures/${props.params.structureId}/members/overview`}
+        {label: 'Licenciés', url: `/structures/${props.params.structureId}/members/overview`},
       ]}
       trailing={
         <div className="flex items-center justify-end gap-x-2">
@@ -39,7 +39,7 @@ export default function MembersOverviewUi(props: Props) {
               <TableFilter
                 itemPerPage={users.meta.perPage}
                 resources={[]}
-                resourceRoute={`/structures/${props.params.structureId}/members/overview+`}
+                resourceRoute={`/structures/${props.params.structureId}/members/overview`}
               />
             )}
           />
@@ -95,7 +95,7 @@ function RowBuilder(props: DialogResourceContext<Member> & { structureId?: strin
   return (
     <TableRow
       className="cursor-pointer"
-      onClick={() => navigate(`/structures/${props.structureId}/members/${props.member.id}/view`)}
+      onClick={() => navigate(`/structures/${props.structureId}/members/${props.member.id}/overview`)}
     >
       <TableCell className="font-medium whitespace-nowrap !text-xs">
         <Badge variant="outline">
