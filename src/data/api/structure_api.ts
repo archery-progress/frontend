@@ -18,6 +18,12 @@ export const structureApi = createApi({
         url: `/v1/users/@me/structures`,
         method: 'GET'
       })
+    }),
+    getStructure: builder.query<Structure, string>({
+      query: (structureId) => ({
+        url: `/v1/structures/${structureId}`,
+        method: 'GET'
+      })
     })
   }),
 })
@@ -25,4 +31,5 @@ export const structureApi = createApi({
 export const {
   usePaginateStructuresQuery,
   useGetUserStructuresQuery,
+  useGetStructureQuery
 } = structureApi

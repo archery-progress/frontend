@@ -9,4 +9,5 @@ export interface UserState {
 
 export interface StructureState {
   structures: Structure[] | null
+  currentStructure: Structure | null
 }

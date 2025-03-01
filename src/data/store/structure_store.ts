@@ -5,7 +5,8 @@ import { RootState } from "./store"
 const STRUCTURE_KEY = 'structure'
 
 export const initialStructureState: StructureState = {
-  structures: null
+  structures: null,
+  currentStructure: null
 }
 
 export const structureSlice = createSlice({
@@ -21,6 +22,9 @@ export const structureSlice = createSlice({
       } else {
         state.structures = [action.payload]
       }
+    },
+    setCurrentStructure: (state, action) => {
+      state.currentStructure = action.payload
     }
   }
 })
