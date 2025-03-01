@@ -22,8 +22,8 @@ export default function MembersOverviewUi(props: Props) {
     <ApplicationLayout
       mode="platform"
       breadcrumb={[
-        {label: 'Accueil', url: `/platform/${props.params.structureId}/overview`},
-        {label: 'Licenciés', url: `/platform/${props.params.structureId}/members/overview`}
+        {label: 'Accueil', url: `/structures/${props.params.structureId}/overview`},
+        {label: 'Licenciés', url: `/structures/${props.params.structureId}/members/overview`}
       ]}
       trailing={
         <div className="flex items-center justify-end gap-x-2">
