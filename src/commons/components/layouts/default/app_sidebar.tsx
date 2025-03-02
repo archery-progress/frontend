@@ -1,33 +1,26 @@
-import { ComponentProps, Fragment, useEffect } from 'react'
+import { ComponentProps, ReactElement, useEffect } from 'react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/commons/components/ui/sidebar'
 import { Button } from '@/commons/components/ui/button-old'
-import { LogOutIcon, User2Icon } from 'lucide-react'
+import { LogOutIcon } from 'lucide-react'
 import ViewSelector from '@/commons/components/layouts/default/view_selector'
-import { LayoutProps } from '@/commons/components/layouts/default/layout'
-import { platformSettingLinks, sidebarLinks } from '@/commons/components/layouts/default/settings.ts'
 import { toast } from 'sonner'
 import { toastVariant } from '@/commons/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserState, userSlice } from '@/data/store/user_store.ts'
-import { useNavigate, useParams } from 'react-router'
-import { BasicView } from '@/commons/components/layouts/sidebar_views/basic_view.tsx'
-import { GroupView } from '@/commons/components/layouts/sidebar_views/group_view.tsx'
+import { useNavigate } from 'react-router'
 import { useLogoutMutation } from '@/data/api/auth_api'
 
-export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) {
+export type SidebarProps = {
+  items: ReactElement
+  trailing?: ReactElement
+}
+
+export function AppSidebar(props: ComponentProps<typeof Sidebar> & SidebarProps) {
   const dispatch = useDispatch()
-  const params = useParams()
   const navigate = useNavigate()
 
   const [logout, result] = useLogoutMutation()
-  const { user } = useSelector(getUserState)
-
-  const {mode, ...rest} = props
-  const currentLinks = sidebarLinks(params.structureId)[mode]
-
-  const handleProfile = () => {
-    navigate('/profil/general')
-  }
+  const {user} = useSelector(getUserState)
 
   useEffect(() => {
     if (result.isSuccess) {
@@ -51,28 +44,16 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar> & LayoutProps) 
   }, [result])
 
   return (
-    <Sidebar variant="inset" {...rest}>
+    <Sidebar variant="inset">
       <SidebarHeader className="px-2 pt-4">
-        {user && (
-          <ViewSelector currentView={mode} user={user} />
-        )}
+        {user && <ViewSelector user={user}/>}
       </SidebarHeader>
       <SidebarContent className="py-5 gap-0">
-        {mode === 'platform' && (
-          <Fragment>
-            <GroupView title="Vie de l'association" items={currentLinks} />
-            <BasicView item={platformSettingLinks(params.structureId)} />
-          </Fragment>
-        )}
+        {props.items}
       </SidebarContent>
       <SidebarRail/>
       <SidebarFooter>
-        {mode === 'archery' && (
-          <Button variant="outline" onClick={handleProfile}>
-            <User2Icon className="mr-2"/>
-            Mon compte
-          </Button>
-        )}
+        {props.trailing}
         <Button
           variant="default"
           onClick={() => logout()}

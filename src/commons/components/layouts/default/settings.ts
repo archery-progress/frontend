@@ -18,15 +18,14 @@ export type SidebarGroupItems = {
   }[]
 }
 
-export function archeryLinks(): Record<string, SidebarGroupItems> {
+export function userPractices(): SidebarBasicItem {
+  const baseUrl = `/archery`
   return {
-    follow: {
-      title: 'Mon suivis d\'archer',
-      items: [
-        {title: 'Mes séances', url: '/archery/sessions/overview'},
-        {title: 'Mes entrainements', url: '/archery/practices/overview'}
-      ]
-    }
+    title: 'Entrainements',
+    items: [
+      {title: 'Séances', url: `${baseUrl}/sessions/overview`},
+      {title: 'Entrainements', url: `${baseUrl}/practices/overview`}
+    ]
   }
 }
 
@@ -40,7 +39,7 @@ export function platformLinks(id?: string): Record<string, SidebarGroupItems> {
         {title: 'Licenciés', url: `${baseUrl}/members/overview`},
         {title: 'Encadrants', url: `${baseUrl}/supervisors/overview`},
         {title: 'Équipe administrative', url: `${baseUrl}/staff/overview`},
-        {title: 'Documents partagés', url: `${baseUrl}/documents/transfert`},
+        {title: 'Documents partagés', url: `${baseUrl}/documents/transfert`}
       ]
     },
     practices: {
@@ -51,7 +50,7 @@ export function platformLinks(id?: string): Record<string, SidebarGroupItems> {
         {title: 'Séances', url: `${baseUrl}/sessions/overview`},
         {title: 'Entrainements', url: `${baseUrl}/practices/overview`}
       ]
-    },
+    }
   }
 }
 
@@ -89,7 +88,7 @@ export type ViewMode = 'manager' | 'archery' | 'platform'
 export function sidebarLinks(id?: string) {
   return {
     manager: managerLinks(),
-    archery: archeryLinks(),
+    archery: userPractices(),
     platform: platformLinks(id)
   }
 }

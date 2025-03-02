@@ -14,6 +14,7 @@ import OnboardingRouter from '@/pages/onboarding/onboarding-router.tsx'
 import ProfilRouter from '@/pages/profil/profil-router.tsx'
 import StaffRouter from '@/pages/staff/staff-router.tsx'
 import StructureMiddleware from './commons/components/middlewares/current-structure.middleware.tsx'
+import Container from '@/pages/platform/container.tsx'
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -48,6 +49,9 @@ export default function App() {
       </Route>
 
       <Route path="structures/:structureId" element={<AuthenticatedLayout/>}>
+        <Route path="overview" element={<Container />}>
+          <Route element={<PagePlatformDashboardFeature/>}/>
+        </Route>
         <Route element={<StructureMiddleware />}>
 
         <Route path="overview" element={<PagePlatformDashboardFeature/>}/>

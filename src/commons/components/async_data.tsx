@@ -1,23 +1,24 @@
-import { TypedUseQueryHookResult } from '@reduxjs/toolkit/query/react'
 import { ReactNode } from 'react'
 
-type Props<T> = {
-  source: TypedUseQueryHookResult<T, void, any, any>
-  onData: (data: T) => ReactNode
+type Props<T, E> = {
+  data?: T
+  isLoading: boolean
+  error?: E
+  onData?: (data: T) => ReactNode
   onError?: (error: never) => ReactNode
   onLoading?: ReactNode
 }
 
-export function AsyncData<T>(props: Props<T>) {
-  if (props.source.isSuccess) {
-    return props.onData(props.source.data)
+export function AsyncData<T, E>(props: Props<T, E>) {
+  if (props.onData && props.data) {
+    return props.onData(props.data)
   }
 
-  if (props.onLoading && props.source.isLoading) {
+  if (props.onLoading && props.isLoading) {
     return props.onLoading
   }
 
-  if (props.onError && props.source.isError) {
-    return props.onError(props.source.error as never)
+  if (props.onError && (props.error || props.data == undefined || typeof (props.data as unknown) === 'string')) {
+    return props.onError(props.data as never)
   }
 }

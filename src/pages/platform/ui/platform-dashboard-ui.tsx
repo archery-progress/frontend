@@ -1,4 +1,3 @@
-import { ApplicationLayout } from '@/commons/components/layouts/default/layout.tsx'
 import { Params } from 'react-router'
 
 type Props = {
@@ -7,13 +6,6 @@ type Props = {
 
 export default function PlatformDashboardUi(props: Props) {
   return (
-    <ApplicationLayout
-      mode="platform"
-      breadcrumb={[
-        {label: 'Accueil', url: `/platform/${props.params.structureId}/overview`},
-      ]}
-    >
-      Dashboard
-    </ApplicationLayout>
+    <p>dd</p>
   )
 }

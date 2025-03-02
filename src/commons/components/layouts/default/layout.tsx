@@ -1,4 +1,4 @@
-import { Fragment, PropsWithChildren, ReactNode } from 'react'
+import { Fragment, PropsWithChildren, ReactNode, useState } from 'react'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/commons/components/ui/sidebar'
 import { Separator } from '@/commons/components/ui/separator'
 import {
@@ -8,17 +8,24 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/commons/components/ui/breadcrumb'
-import { AppSidebar } from '@/commons/components/layouts/default/app_sidebar'
-import { ViewMode } from '@/commons/components/layouts/default/settings.ts'
+
+
 import { useNavigate } from 'react-router'
+import {
+  BreadcrumbContext,
+  BreadcrumbElement, PageContext, PageProps
+} from '@/commons/components/layouts/default/context'
 
 export type LayoutProps = {
-  breadcrumb?: { label: string; url?: string }[]
+  breadcrumb?: BreadcrumbElement[]
+  sidebar: ReactNode,
   trailing?: ReactNode
-  mode: ViewMode
 }
 
 export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
+  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbElement[]>(props.breadcrumb ?? [])
+  const [page, setPage] = useState<PageProps>({})
+
 
   const navigate = useNavigate()
 
@@ -27,24 +34,27 @@ export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar {...props} />
-      <SidebarInset className="bg-background">
-        <header className="flex sticky z-10 top-0 h-16 shrink-0 items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1"/>
-          {props.breadcrumb && (
-            <div className="hidden md:flex items-center">
-              <Separator orientation="vertical" className="mr-2 !h-6"/>
-              <Breadcrumb>
-                <BreadcrumbList>
-                  {props.breadcrumb.map((item, index) => {
-                    if (index === props.breadcrumb!.length - 1) {
-                      return (
-                        <BreadcrumbItem key={index}>
-                          <BreadcrumbPage className="font-medium cursor-pointer">{item.label}</BreadcrumbPage>
-                        </BreadcrumbItem>
-                      )
-                    }
+    <PageContext.Provider value={[page, setPage]}>
+      <BreadcrumbContext.Provider value={[breadcrumbs, setBreadcrumbs]}>
+        <SidebarProvider>
+          {props.sidebar}
+
+          <SidebarInset className="bg-background">
+            <header className="flex sticky z-10 top-0 h-16 shrink-0 items-center gap-2 px-4">
+              <SidebarTrigger className="-ml-1"/>
+              {breadcrumbs && (
+                <div className="hidden md:flex items-center">
+                  <Separator orientation="vertical" className="mr-2 !h-6"/>
+                  <Breadcrumb>
+                    <BreadcrumbList>
+                      {breadcrumbs.map((item, index) => {
+                        if (index === breadcrumbs.length - 1) {
+                          return (
+                            <BreadcrumbItem key={index}>
+                              <BreadcrumbPage className="font-medium cursor-pointer">{item.label}</BreadcrumbPage>
+                            </BreadcrumbItem>
+                          )
+                        }
 
                     return (
                       <Fragment key={index}>
@@ -65,10 +75,12 @@ export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
             </div>
           )}
 
-          {props.trailing && <div className="hidden md:block flex-1 items-center w-full">{props.trailing}</div>}
-        </header>
-        {props.children}
-      </SidebarInset>
-    </SidebarProvider>
+              {page.trailing && <div className="hidden md:block flex-1 items-center w-full">{page.trailing}</div>}
+            </header>
+            {props.children}
+          </SidebarInset>
+        </SidebarProvider>
+      </BreadcrumbContext.Provider>
+    </PageContext.Provider>
   )
 }

@@ -1,5 +1,9 @@
 import { Dispatch, SetStateAction } from 'react'
 import { z } from 'zod'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
+import { SerializedError } from '@reduxjs/toolkit'
+
+export type QueryError = FetchBaseQueryError | SerializedError | undefined
 
 export type State<T> = [T, Dispatch<SetStateAction<T>>]
 

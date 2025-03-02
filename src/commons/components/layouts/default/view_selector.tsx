@@ -16,7 +16,6 @@ import { useSelector } from 'react-redux'
 import { getStructureState } from '@/data/store/structure_store'
 
 type Props = {
-  currentView: string
   user: User
 }
 
@@ -55,7 +54,7 @@ export default function ViewSelector(props: Props) {
   const currentView = buildViews.find((view) => {
     return pathname.startsWith('/structures')
       ? pathname.includes(view.id)
-      : view.id === props.currentView
+      : view.id === 'props.currentView'
   })
 
   return (

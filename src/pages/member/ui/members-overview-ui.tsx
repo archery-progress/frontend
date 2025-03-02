@@ -4,12 +4,12 @@ import { DialogResourceContext, Paginated } from '@/commons/utils'
 import { Member } from '@/data/models/user.ts'
 import TableFilter from '@/commons/components/table_filter.tsx'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/commons/components/ui/table.tsx'
-import { ApplicationLayout } from '@/commons/components/layouts/default/layout.tsx'
 import { TypedUseQueryHookResult } from '@reduxjs/toolkit/query/react'
 import { Params, useNavigate } from 'react-router'
 import { Badge } from '@/commons/components/ui/badge.tsx'
 import { DateTime } from 'luxon'
-import MemberViewDialogFeature from '@/pages/member/components/feature/view_dialog/member-view-dialog-feature.tsx'
+import { useDefineBreadcrumb, useDefineTrailing } from '@/commons/components/layouts/default/hooks.ts'
+import { Fragment } from 'react'
 
 type Props = {
   paginatedMembersQuery: TypedUseQueryHookResult<any, void, any, any>
@@ -18,6 +18,9 @@ type Props = {
 }
 
 export default function MembersOverviewUi(props: Props) {
+  useDefineBreadcrumb([{label: 'Licenciés', url: `/platform/${props.params.structureId}/members/overview`}])
+  useDefineTrailing(<SidebarTrailing {...props} />)
+
   return (
     <ApplicationLayout
       mode="platform"
@@ -123,6 +126,30 @@ function EmptyData() {
           <div className="mt-5"></div>
         </div>
       </div>
+    </div>
+  )
+}
+
+
+function SidebarTrailing(props: Props) {
+  return (
+    <div className="flex items-center justify-end gap-x-2">
+      <Searchbar
+        placeholder="Search for a user..."
+        searchKey="search"
+        redirect={`/structures/${props.params.structureId}/members/overview`}
+      />
+
+      <AsyncData<Paginated<Member>>
+        source={props.paginatedMembersQuery}
+        onData={(users) => (
+          <TableFilter
+            itemPerPage={users.meta.perPage}
+            resources={[]}
+            resourceRoute={`/structures/${props.params.structureId}/members/overview+`}
+          />
+        )}
+      />
     </div>
   )
 }
