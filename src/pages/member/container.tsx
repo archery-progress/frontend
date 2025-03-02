@@ -14,7 +14,7 @@ export default function Container() {
         <GroupView title="Votre organisation" items={platformLinks(params.structureId)}/>
         <BasicView item={platformSettingLinks(params.structureId)} />
       </Fragment>
-    )
+    ),
   }
 
   return (
