@@ -1,0 +1,39 @@
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  extract-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract-version.outputs.VERSION }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set short git comme SHA
+        id: extract-version
+        run: |
+          echo ${{ github.sha }} 
+      - name: Remove v prefix
+        run: |
+          VERSION=$(echo ${{ github.ref }} | sed 's/^v//')
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+      - name: Confirm git comme SHA output
+        run: echo ${{ steps.extract-version.outputs.VERSION }}
+  build:
+    needs: [extract-version]
+    uses: archery-progress/infrastructure/.github/workflows/build-and-push.yaml@main
+    with:
+      registry: ghcr.io
+      ref: main
+      repository: archery-progress/frontend
+      tag: ${{ needs.extract-version.outputs.version }}
+      registry_username: ${{ github.actor }}
+    secrets:
+      PAT: ${{ secrets.GITHUB_TOKEN }}
+      CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
