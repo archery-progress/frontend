@@ -13,6 +13,7 @@ import { PagePlatformDashboardFeature } from '@/pages/platform/feature/page-plat
 import OnboardingRouter from '@/pages/onboarding/onboarding-router.tsx'
 import ProfilRouter from '@/pages/profil/profil-router.tsx'
 import StaffRouter from '@/pages/staff/staff-router.tsx'
+import SupervisorsRouter from '@/pages/supervisors/supervisors-router.tsx'
 import StructureMiddleware from './commons/components/middlewares/current-structure.middleware.tsx'
 
 export default function App() {
@@ -49,12 +50,11 @@ export default function App() {
 
       <Route path="structures/:structureId" element={<AuthenticatedLayout/>}>
         <Route element={<StructureMiddleware />}>
-
-        <Route path="overview" element={<PagePlatformDashboardFeature/>}/>
-        <Route path="members/*" element={<MemberRouter/>}/>
-        <Route path="staff/*" element={<StaffRouter/>}/>
+          <Route path="overview" element={<PagePlatformDashboardFeature/>}/>
+          <Route path="members/*" element={<MemberRouter/>}/>
+          <Route path="staff/*" element={<StaffRouter/>}/>
+          <Route path="supervisors/*" element={<SupervisorsRouter/>}/>
         </Route>
-        
       </Route>
 
       <Route path="*" element={<Navigate to="/archery/dashboard" replace/>}/>
