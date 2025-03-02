@@ -3,28 +3,35 @@ import { usePaginateMembersQuery } from '@/data/api/member_api.ts'
 import { useDialogResource } from '@/commons/utils'
 import { Member } from '@/data/models/user.ts'
 import { useEffect } from 'react'
-import MembersOverviewUi from '@/pages/member/ui/members-overview-ui.tsx'
+import MembersOverview from '../ui/members-overview'
+import { AsyncData } from '@/commons/components/async_data'
 
 export function PageMembersOverviewFeature() {
   const params = useParams()
   const [searchParams] = useSearchParams()
 
-  const paginatedMembersQuery = usePaginateMembersQuery({
+  const { data: members, refetch, isLoading } = usePaginateMembersQuery({
     structureId: params.structureId,
-    queryParams: searchParams.toString()
+    queryParams: searchParams.toString(),
   }, {skip: !params.structureId})
 
   const editDialogProps = useDialogResource<Member>()
 
   useEffect(() => {
-    paginatedMembersQuery.refetch()
+    refetch()
   }, [searchParams])
 
   return (
-    <MembersOverviewUi
-      paginatedMembersQuery={paginatedMembersQuery}
-      params={params}
-      editDialog={editDialogProps}
+    <AsyncData 
+      data={members}
+      isLoading={isLoading}
+      onData={(data) => (
+        <MembersOverview 
+          members={data}
+          params={params}
+          editDialog={editDialogProps}
+        />
+      )}
     />
   )
 }
