@@ -50,13 +50,13 @@ export default function App() {
 
       <Route path="structures/:structureId" element={<AuthenticatedLayout/>}>
         <Route path="overview" element={<Container />}>
-          <Route element={<PagePlatformDashboardFeature/>}/>
+          <Route index element={<PagePlatformDashboardFeature/>}/>
         </Route>
         <Route element={<StructureMiddleware />}>
 
-        <Route path="overview" element={<PagePlatformDashboardFeature/>}/>
-        <Route path="members/*" element={<MemberRouter/>}/>
-        <Route path="staff/*" element={<StaffRouter/>}/>
+          <Route path="overview" element={<PagePlatformDashboardFeature/>}/>
+          <Route path="members/*" element={<MemberRouter/>}/>
+          <Route path="staff/*" element={<StaffRouter/>}/>
         </Route>
         
       </Route>
