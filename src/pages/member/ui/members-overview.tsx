@@ -18,8 +18,8 @@ export interface MembersOverviewProps {
 
 export default function MembersOverview(props: MembersOverviewProps) {
   useDefineBreadcrumb([{label: 'Licenciés', url: `/platform/${props.params.structureId}/members/overview`}])
-  useDefineTrailing(<SidebarTrailing {...props} />) 
-  
+  useDefineTrailing(<SidebarTrailing {...props} />)
+
   return (
     <div>
       <div className='p-5 border-b'>
@@ -30,19 +30,16 @@ export default function MembersOverview(props: MembersOverviewProps) {
       </div>
 
       <div>
-
         <Table meta={props.members.meta} empty={<EmptyData />}>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Identité</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead className="text-right">
-                    Dernière mise à jour
-              </TableHead>
+              <TableHead className="text-right">Dernière mise à jour</TableHead>
             </TableRow>
           </TableHeader>
 
-          <TableBody 
+          <TableBody
             data={props.members.data}
             builder={(member) => (
               <RowBuilder
@@ -108,7 +105,7 @@ function SidebarTrailing(props: MembersOverviewProps) {
         redirect={`/structures/${props.params.structureId}/members/overview`}
       />
 
-      <TableFilter 
+      <TableFilter
         itemPerPage={props.members.meta.perPage}
         resources={[]}
         resourceRoute={`/structures/${props.params.structureId}/members/overview+`}

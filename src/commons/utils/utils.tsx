@@ -7,7 +7,7 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 
 export function getCurrentParameters(source?: URLSearchParams): { [key: string]: string } {
   const queryParams = source ?? new URLSearchParams(window.location.search)
-  return Array.from(queryParams.entries()).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+  return Array.from(queryParams.entries()).reduce((acc, [key, value]) => ({...acc, [key]: value}), {})
 }
 
 export function useChangeItemPerPage() {
@@ -103,13 +103,13 @@ const baseVariant: ExternalToast = {
     warning: '!text-yellow-600 !bg-yellow-50',
     info: '!text-blue-600 !bg-blue-50',
     description: 'font-medium',
-    closeButton: 'bg-white border border-input',
-  },
+    closeButton: 'bg-white border border-input'
+  }
 }
 
 export const toastVariant: { [key in ToastVariant]: ExternalToast } = {
   error: baseVariant,
-  success: baseVariant,
+  success: baseVariant
 }
 
 type Action = 'store' | 'update' | 'delete'
@@ -118,5 +118,13 @@ export const permission = {
   users: (action: Action, manager: boolean = false) => `${manager ? 'manager:' : ''}users:${action}`,
   roles: (action: Action, manager: boolean = false) => `${manager ? 'manager:' : ''}roles:${action}`,
   permissions: (action: Action, manager: boolean = false) => `${manager ? 'manager:' : ''}permissions:${action}`,
-  guilds: (action: Action, manager: boolean = false) => `${manager ? 'manager:' : ''}guilds:${action}`,
+  guilds: (action: Action, manager: boolean = false) => `${manager ? 'manager:' : ''}guilds:${action}`
+}
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}`
 }

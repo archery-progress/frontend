@@ -12,7 +12,7 @@ export default function Container() {
     items: (
       <Fragment>
         <GroupView title="Votre organisation" items={platformLinks(params.structureId)}/>
-        <BasicView item={platformSettingLinks(params.structureId)} />
+        <BasicView item={platformSettingLinks(params.structureId)}/>
       </Fragment>
     ),
   }

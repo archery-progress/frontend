@@ -1,32 +1,27 @@
 import { useParams } from 'react-router'
 import { useGetMemberQuery } from '@/data/api/member_api.ts'
-import { useEffect } from 'react'
 import { Skeleton } from '@/commons/components/ui/skeleton'
 import MemberOverview from '../ui/member-overview'
+import { AsyncData } from '@/commons/components/async_data.tsx'
 
 export default function PageMemberViewFeature() {
   const params = useParams()
 
-  const { data: member } = useGetMemberQuery({
+  const query = useGetMemberQuery({
     structureId: params.structureId,
     memberId: params.memberId,
   })
 
-  useEffect(() => {
-    console.log(member)
-    
-  }, [member])
-
-  if (!member) {
-    return (
-      <MemberLoading />
-    )
-  }
-
   return (
-    <MemberOverview
-      member={member!}
-      params={params}
+    <AsyncData
+      {...query}
+      onLoading={<MemberLoading/>}
+      onData={(member) => (
+        <MemberOverview
+          member={member}
+          params={params}
+        />
+      )}
     />
   )
 }
@@ -35,7 +30,7 @@ export default function PageMemberViewFeature() {
 function MemberLoading() {
   return (
     <div className="p-5 border-b">
-      <Skeleton className="w-full h-10" />
+      <Skeleton className="w-full h-10"/>
     </div>
   )
 }

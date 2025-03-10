@@ -1,21 +1,24 @@
 import { DialogDescription, DialogTitle } from '@/commons/components/ui/dialog.tsx'
 import {
   Sidebar,
-  SidebarContent, SidebarFooter,
-  SidebarGroup, SidebarGroupContent,
-  SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
-  SidebarProvider
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
 } from '@/commons/components/ui/sidebar.tsx'
-import { AsyncData } from '@/commons/components/async_data.tsx'
 import { Member } from '@/data/models/user.ts'
 import { Fragment } from 'react'
-import { TypedUseQueryHookResult } from '@reduxjs/toolkit/query/react'
 import { Params } from 'react-router'
 import { TabItem } from '@/pages/member/components/feature/view_dialog/member-view-content-feature.tsx'
 import { State } from '@/commons/utils'
 
 type Props = {
-  userQuery: TypedUseQueryHookResult<any, void, any, any>
+  member: Member
   params: Readonly<Params<string>>
   tabs: TabItem[]
   tabState: State<TabItem>
@@ -33,19 +36,12 @@ export default function MemberViewContentUi(props: Props) {
       <SidebarProvider className="items-start">
         <Sidebar collapsible="none" className="hidden md:flex">
           <SidebarHeader className="px-4">
-            <AsyncData<Member>
-              source={props.userQuery}
-              onData={(member) => (
-                <Fragment>
-                  <p className="truncate font-semibold">
-                    {member.user.firstname} {member.user.lastname}
-                  </p>
-                  <p className="-mt-2 truncate text-xs">
-                    {member.structure.name}
-                  </p>
-                </Fragment>
-              )}
-            />
+            <p className="truncate font-semibold">
+              {props.member.user.firstname} {props.member.user.lastname}
+            </p>
+            <p className="-mt-2 truncate text-xs">
+              {props.member.structure.name}
+            </p>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
@@ -75,12 +71,7 @@ export default function MemberViewContentUi(props: Props) {
           </SidebarFooter>
         </Sidebar>
         <main className="flex h-[480px] flex-1 flex-col overflow-hidden">
-          <AsyncData<Member>
-            source={props.userQuery}
-            onData={(member) => (
-              <currentTab.component member={member} />
-            )}
-          />
+          <currentTab.component member={props.member} />
         </main>
       </SidebarProvider>
     </Fragment>

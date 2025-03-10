@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUserState, userSlice } from '@/data/store/user_store.ts'
 import { useNavigate } from 'react-router'
 import { useLogoutMutation } from '@/data/api/auth_api'
+import AlertCallout from '@/commons/components/alert-callout.tsx'
 
 export type SidebarProps = {
   items: ReactElement

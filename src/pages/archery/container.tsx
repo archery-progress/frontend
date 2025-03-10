@@ -3,7 +3,7 @@ import { ApplicationLayout } from '@/commons/components/layouts/default/layout.t
 import { AppSidebar, SidebarProps } from '@/commons/components/layouts/default/app_sidebar.tsx'
 import { BasicView } from '@/commons/components/layouts/sidebar_views/basic_view.tsx'
 import { Fragment } from 'react'
-import { userPractices } from '@/commons/configs/sidebar/archery.tsx'
+import { mySpace, userPractices } from '@/commons/configs/sidebar/archery.tsx'
 import MyProfilButton from '@/commons/components/my-profil-button.tsx'
 
 export default function Container() {
@@ -11,6 +11,7 @@ export default function Container() {
     trailing: <MyProfilButton />,
     items: (
       <Fragment>
+        <BasicView item={mySpace()}/>
         <BasicView item={userPractices()}/>
       </Fragment>
     ),

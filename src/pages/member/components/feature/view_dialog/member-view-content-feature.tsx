@@ -8,6 +8,8 @@ import MemberPermissionsViewFeature
   from '@/pages/member/components/feature/view_dialog/member-permissions-view-feature.tsx'
 import MemberRolesViewFeature from '@/pages/member/components/feature/view_dialog/member-roles-view-feature.tsx'
 import MemberLicenceViewFeature from '@/pages/member/components/feature/view_dialog/member-licence-view-feature.tsx'
+import { AsyncData } from '@/commons/components/async_data.tsx'
+import { QueryError } from '@/commons/utils'
 
 type Props = {
   structureId?: string
@@ -29,16 +31,21 @@ export default function MemberViewContentFeature(props: Props) {
   ]
 
   const tabItemState = useState<TabItem>(tabs[0])
-  const userQuery = useGetMemberQuery(props, {
-    skip: !props.structureId || !props.memberId
+  const memberQuery = useGetMemberQuery(props, {
+    skip: !props.structureId || !props.memberId,
   })
 
   return (
-    <MemberViewContentUi
-      userQuery={userQuery}
-      params={props}
-      tabs={tabs}
-      tabState={tabItemState}
+    <AsyncData<Member, QueryError>
+      {...memberQuery}
+      onData={(member) => (
+        <MemberViewContentUi
+          member={member}
+          params={props}
+          tabs={tabs}
+          tabState={tabItemState}
+        />
+      )}
     />
   )
 }

@@ -1,4 +1,4 @@
-import { Fragment, PropsWithChildren, ReactNode, useState } from 'react'
+import { Fragment, PropsWithChildren, ReactNode, useEffect, useState } from 'react'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/commons/components/ui/sidebar'
 import { Separator } from '@/commons/components/ui/separator'
 import {
@@ -10,7 +10,7 @@ import {
 } from '@/commons/components/ui/breadcrumb'
 
 
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate, useNavigation } from 'react-router'
 import {
   BreadcrumbContext,
   BreadcrumbElement, PageContext, PageProps
@@ -23,11 +23,10 @@ export type LayoutProps = {
 }
 
 export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
+  const navigate = useNavigate()
+
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbElement[]>(props.breadcrumb ?? [])
   const [page, setPage] = useState<PageProps>({})
-
-
-  const navigate = useNavigate()
 
   const handleNavigate = (url: string) => {
     navigate(url)
@@ -59,8 +58,8 @@ export function ApplicationLayout(props: PropsWithChildren<LayoutProps>) {
                     return (
                       <Fragment key={index}>
                         <BreadcrumbItem className="hidden md:block">
-                          <span 
-                            className='font-medium cursor-pointer' 
+                          <span
+                            className='font-medium cursor-pointer'
                             onClick={() => handleNavigate(item.url!)}
                           >
                             {item.label}
